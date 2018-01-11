@@ -2,79 +2,7 @@
           package="com.eruntech.espushnotification">
 
     <application
-            android:allowBackup="true"
-            android:label="@string/app_name"
-            android:icon="@mipmap/ic_launcher"
-            android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
-        <receiver android:name=".broadcast.NetworkConnectChangedReceiver" >
-
-            <intent-filter android:priority="1">
-
-                <!--自定义广播，必须添加-->
-                <action android:name="eruntech.net.conn.PUSH_MESSAGE" />
-                <action android:name="android.intent.action.TIME_TICK"/>
-                <!-- 【必须】 系统广播：网络切换 -->
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <!-- 【必须】 系统广播：关闭或打开飞行模式 -->
-                <action android:name="android.intent.action.AIRPLANE_MODE" />
-                <!-- 【必须】 系统广播：插入耳机时 -->
-                <!--<action android:name="android.intent.action.HEADSET_PLUG" />-->
-                <!-- 【必须】 系统广播：充电时或电量发生变化 -->
-                <!--<action android:name="android.intent.action.BATTERY_CHANGED" />-->
-                <!-- 【必须】 系统广播：电池电量充足 -->
-                <action android:name="android.intent.action.BATTERY_OKAY" />
-                <!-- 【必须】 系统广播：屏幕被打开 -->
-                <action android:name="android.intent.action.SCREEN_ON" />
-                <!-- 【必须】 系统广播：屏幕被关闭 -->
-                <action android:name="android.intent.action.SCREEN_OFF" />
-                <!-- 【必须】 系统广播：按下Home键 -->
-                <action android:name="android.intent.action.CLOSE_SYSTEM_DIALOGS" />
-
-                <!-- 【可选】 系统广播：开屏 -->
-                <action android:name="android.intent.action.USER_PRESENT" />
-
-                <action android:name="android.Net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-
-                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-            <!-- 【可选】 usb相关的系统广播，增强信鸽service的复活机会，请根据需要添加 -->
-            <intent-filter android:priority="0x7fffffff" >
-                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
-                <action android:name="android.intent.action.MEDIA_REMOVED" />
-                <action android:name="android.intent.action.MEDIA_CHECKING" />
-                <action android:name="android.intent.action.MEDIA_EJECT" />
-
-                <data android:scheme="file" />
-            </intent-filter>
-
-        </receiver>
-
-        <receiver android:name="broadcast.NotificationBroadcastReceiver">
-            <intent-filter>
-                <action android:name="notification_cancelled"/>
-                <action android:name="notification_clicked"/>
-            </intent-filter>
-        </receiver>
-
-        <!-- service -->
-        <service
-                android:persistent="true"
-                android:name=".service.MessageService"
-                android:process="com.rabbit.MessageService">
-        </service>
-
-        <service
-                android:persistent="true"
-                android:name="service.MessageJobService"
-                android:permission="android.permission.BIND_JOB_SERVICE"
-                android:process="com.rabbit.MessageJobService">
-        </service>
 
     </application>
 
