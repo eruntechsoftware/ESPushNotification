@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.birthstone.core.helper.ToastHelper;
 import com.eruntech.espushnotification.service.IMessageBinder;
@@ -60,7 +59,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
             localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
             localContext.startService(mIntent);
             //Service被启动时，将会有弹出消息提示
-            Toast.makeText(context, "[开启我的服务]", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "[开启我的服务]", Toast.LENGTH_LONG).show();
 
         }
         catch (Exception ex)

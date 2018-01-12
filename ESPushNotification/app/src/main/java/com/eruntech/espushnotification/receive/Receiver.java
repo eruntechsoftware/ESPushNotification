@@ -110,8 +110,7 @@ public class Receiver implements Consumer
         long deliveryTag = env.getDeliveryTag();
         channel.basicAck(deliveryTag, false);
 
-        Intent intentReceiver = new Intent();
-        intentReceiver.setAction("NOTIFICATION_RECEIVER_MESSAGE");
+        Intent intentReceiver = new Intent("NOTIFICATION_RECEIVER_MESSAGE");
         intentReceiver.putExtra("params", message);
         context.getApplicationContext().sendBroadcast(intentReceiver);
         if(receiveListener!=null)
