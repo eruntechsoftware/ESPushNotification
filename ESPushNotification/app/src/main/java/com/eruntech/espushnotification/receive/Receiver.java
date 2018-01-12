@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.eruntech.espushnotification.broadcast.NotificationBroadcastReceiver;
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -111,7 +110,7 @@ public class Receiver implements Consumer
         long deliveryTag = env.getDeliveryTag();
         channel.basicAck(deliveryTag, false);
 
-        Intent intentReceiver = new Intent(context, NotificationBroadcastReceiver.class);
+        Intent intentReceiver = new Intent();
         intentReceiver.setAction("NOTIFICATION_RECEIVER_MESSAGE");
         intentReceiver.putExtra("params", message);
         context.getApplicationContext().sendBroadcast(intentReceiver);
