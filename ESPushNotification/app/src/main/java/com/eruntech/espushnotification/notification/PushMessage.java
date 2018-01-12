@@ -1,5 +1,4 @@
 package com.eruntech.espushnotification.notification;
-
 import com.google.gson.Gson;
 
 import java.nio.charset.Charset;
@@ -12,21 +11,34 @@ import java.nio.charset.Charset;
 
 public class PushMessage
 {
+    private String tag;
     private String title;
     private String content;
     private String parameter;
 
     /**
      * 推送通知
+     * @param tag 标记,消息接收者
      * @param title 标题
      * @param content 内容
      * @param parameter 参数
      * **/
-    public PushMessage(String title,String content,String parameter)
+    public PushMessage(String tag,String title,String content,String parameter)
     {
+        this.tag = tag;
         this.title = title;
         this.content = content;
         this.parameter = parameter;
+    }
+
+    public void setTag (String tag)
+    {
+        this.tag = tag;
+    }
+
+    public String getTag ()
+    {
+        return tag;
     }
 
     /**
@@ -110,4 +122,32 @@ public class PushMessage
         }
         return obj;
     }
+
+    /**
+     * 消息类转字节流
+     * @return byte[]
+     */
+    public byte[] toBytes()
+    {
+        byte[] bytes = null;
+        try
+        {
+            bytes = this.toJsonString().getBytes();
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        return bytes;
+    }
+
+    /**
+     * 转换为json字符串
+     * **/
+    public String toJsonString()
+    {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
 }
