@@ -41,6 +41,10 @@ public class MessageJobService extends JobService implements ReceiveListener
 
             userData = new UserData(MessageJobService.this.getApplicationContext());
 
+            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
+            mIntent.setClass(MessageJobService.this.getApplicationContext(), MessageService.class);
+            MessageJobService.this.getApplicationContext().stopService(mIntent);
+
             startReceiver ();
 //            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
