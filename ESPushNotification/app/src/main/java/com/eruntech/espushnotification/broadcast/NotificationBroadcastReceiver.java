@@ -5,8 +5,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.birthstone.core.helper.ToastHelper;
-
 public class NotificationBroadcastReceiver extends BroadcastReceiver
 {
 
@@ -28,20 +26,21 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver
         if (action.equals("NOTIFICATION_RECEIVER_MESSAGE"))
         {
             //处理滑动清除和点击删除事件
-            ToastHelper.toastShow(context, "接收到消息");
+//            ToastHelper.toastShow(context, "接收到消息");
+            receive(params);
         }
 
         if (action.equals("NOTIFICATION_CLICKED"))
         {
             //处理点击事件
-            ToastHelper.toastShow(context, "处理点击事件");
+//            ToastHelper.toastShow(context, "处理点击事件");
             clicked(params);
         }
 
         if (action.equals("NOTIFICATION_CANCELLED"))
         {
             //处理滑动清除和点击删除事件
-            ToastHelper.toastShow(context, "处理滑动清除和点击删除事件");
+//            ToastHelper.toastShow(context, "处理滑动清除和点击删除事件");
         }
     }
 
