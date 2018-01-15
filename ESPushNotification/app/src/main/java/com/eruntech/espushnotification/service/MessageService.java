@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.eruntech.espushnotification.notification.PushMessage;
@@ -55,7 +54,7 @@ public class MessageService extends Service implements ReceiveListener
                 receiver.setReceiveListener(this);
             }
             // Service被启动时，将会有弹出消息提示[c]
-            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
         }
         catch (Exception ex)
         {

@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.eruntech.espushnotification.notification.PushMessage;
@@ -90,7 +89,7 @@ public class MessageJobService extends JobService implements ReceiveListener
                 receiver.setReceiveListener(this);
             }
             // Service被启动时，将会有弹出消息提示[c]
-            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
         }
         catch (Exception ex)
         {
