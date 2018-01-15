@@ -116,6 +116,10 @@ public class Receiver implements Consumer
         intentReceiver.putExtra("params", message);
 
         context.getApplicationContext().sendBroadcast(intentReceiver);
+
+        Intent intentAllReceiver = new Intent("NOTIFICATION_RECEIVER_MESSAGE");
+        intentAllReceiver.putExtra("params", message);
+        context.getApplicationContext().sendBroadcast(intentAllReceiver);
         if(receiveListener!=null)
         {
             receiveListener.receive(message);
