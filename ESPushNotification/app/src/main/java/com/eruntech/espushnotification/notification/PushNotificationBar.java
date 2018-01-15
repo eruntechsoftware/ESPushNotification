@@ -22,15 +22,13 @@ public class PushNotificationBar
 {
     public static void showNotification (Context mContext,String title, String text, String jsonstr)
     {
-        Intent intentClick = new Intent(mContext, NotificationBroadcastReceiver.class);
-        intentClick.setAction("NOTIFICATION_CLICKED");
+        Intent intentClick = new Intent("NOTIFICATION_CLICKED");
         intentClick.putExtra(NotificationBroadcastReceiver.TYPE, 1);
         intentClick.putExtra("params", jsonstr);
 
         PendingIntent pendingIntentClick = PendingIntent.getBroadcast(mContext, 0, intentClick, PendingIntent.FLAG_ONE_SHOT);
 
-        Intent intentCancel = new Intent(mContext, NotificationBroadcastReceiver.class);
-        intentCancel.setAction("NOTIFICATION_CANCELLED");
+        Intent intentCancel = new Intent("NOTIFICATION_CANCELLED");
         intentCancel.putExtra(NotificationBroadcastReceiver.TYPE, -1);
         PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(mContext, 0, intentCancel, PendingIntent.FLAG_ONE_SHOT);
 
