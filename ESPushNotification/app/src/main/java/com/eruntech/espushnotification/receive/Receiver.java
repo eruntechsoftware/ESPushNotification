@@ -23,11 +23,13 @@ public class Receiver implements Consumer
     protected Channel channel;
     protected Connection connection;
     private Context context;
+    private AMQP.Queue.DeclareOk offlineMsg;
     private ReceiveListener receiveListener;
     private String exchangeName = "eruntech";
-
+    private String receiverID;
     public Receiver (Context context,final String receiverID) throws IOException
     {
+        this.receiverID=receiverID;
         this.context = context;
         new Thread(new Runnable()
         {
@@ -44,13 +46,19 @@ public class Receiver implements Consumer
 //                    factory.setPort(80);
                     factory.setUsername("admin");
                     factory.setPassword("admin");
+
                     //创建连接
                     connection = factory.newConnection();
                     //创建频道
                     channel = connection.createChannel();
-
                     channel.exchangeDeclare(exchangeName, "direct", true);
-//                    channel.queueDeclare(receiverID,false,false,false,null);
+
+                    offlineMsg = channel.queueDeclare(receiverID,false,false,false,null);
+                    if(offlineMsg.getMessageCount()>0)
+                    {
+                        channel.queueBind(receiverID, exchangeName, receiverID);
+                    }
+
                     channel.basicQos(1);
                     //绑定交换机和路由规则
                     AMQP.Queue.DeclareOk q = channel.queueDeclare();
@@ -87,26 +95,13 @@ public class Receiver implements Consumer
     public void handleDelivery (String consumerTag, Envelope env, BasicProperties props, byte[] body) throws IOException
     {
         String message = new String(body);
-//        DataCollection params = new DataCollection();
-//        params.add(new Data("userid", message.getToUserID()));
-//        params.add(new Data("frienduserid", message.getFromUserID()));
-//        params.add(new Data("text", message.getText()));
-//        params.add(new Data("type", 1));
-//        params.add(new Data("messagetype", message.getMessageType().toString()));
-//        try
-//        {
-//            params.add(new Data("fileurl", message.getFileUrl()));
-//            params.add(new Data("voicetime", message.getVoiceTime()));
-//            params.add(new Data("time", message.getTime()));
-//            params.add(new Data("messageid", message.getMessageID()));
-//        }
-//        catch (Exception ex)
-//        {
-//            Log.e("RECEIVER::::::", ex.getMessage());
-//        }
-//        MyApplication.DB.executeCursor("spMessageAdd", params);
 
-//        EventBus.getDefault().post(message);
+        Log.d("离线消息数",String.valueOf(offlineMsg.getMessageCount()));
+        if(offlineMsg!=null && offlineMsg.getMessageCount()==0)
+        {
+            channel.queueDelete(receiverID);
+        }
+
         System.out.println(message);
         long deliveryTag = env.getDeliveryTag();
         channel.basicAck(deliveryTag, false);
