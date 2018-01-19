@@ -39,7 +39,7 @@ public class MessageService extends Service implements ReceiveListener {
 
     public void startReceiver() {
         try {
-            if(this.receiver == null) {
+            if(this.userData.getString("username")!=null) {
                 this.receiver = new Receiver(this.getApplicationContext(), this.userData.getString("username"));
                 this.receiver.setReceiveListener(this);
             }
