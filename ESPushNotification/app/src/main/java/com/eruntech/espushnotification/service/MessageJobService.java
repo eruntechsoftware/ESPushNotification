@@ -86,8 +86,8 @@ public class MessageJobService extends JobService implements ReceiveListener
                 Receiver receiver = new Receiver(this.getApplicationContext(), userData.getString("username"));
                 receiver.setReceiveListener(this);
 
-                Receiver receiver1 = new Receiver(this.getApplicationContext(), this.getApplication().getPackageName());
-                receiver1.setReceiveListener(this);
+//                Receiver receiver1 = new Receiver(this.getApplicationContext(), this.getApplication().getPackageName());
+//                receiver1.setReceiveListener(this);
 
             // Service被启动时，将会有弹出消息提示[c]
 //            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
