@@ -16,135 +16,90 @@ import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.ShutdownSignalException;
 
 import java.io.IOException;
+import java.util.Map;
 
 
-public class Receiver implements Consumer
-{
+public class Receiver implements Consumer {
     protected Channel channel;
     protected Connection connection;
     private Context context;
     private AMQP.Queue.DeclareOk offlineMsg;
     private ReceiveListener receiveListener;
-    private String exchangeName = "eruntechPush";
+    private String exchangeName = "eruntech";
     private String receiverID;
-    public Receiver (Context context,final String receiverID) throws IOException
-    {
-        this.receiverID=receiverID;
+
+    public Receiver(Context context, final String receiverID) throws IOException {
+        this.receiverID = receiverID;
         this.context = context;
-        new Thread(new Runnable()
-        {
-            @Override
-            public void run ()
-            {
-                try
-                {
-                    //打开连接和创建频道
-                    ConnectionFactory factory = new ConnectionFactory();
-                    //设置MabbitMQ所在主机ip或者主机名  127.0.0.1即localhost
-                    factory.setHost("192.168.1.150");
-//                    factory.setHost("202.136.60.9");
-//                    factory.setPort(80);
-                    factory.setUsername("admin");
-                    factory.setPassword("admin");
-
-                    //创建连接
-                    connection = factory.newConnection();
-                    //创建频道
-                    channel = connection.createChannel();
-                    channel.exchangeDeclare(exchangeName, "direct", true);
-
-                    offlineMsg = channel.queueDeclare(receiverID,false,false,false,null);
-                    if(offlineMsg.getMessageCount()>0)
-                    {
-                        channel.queueBind(receiverID, exchangeName, receiverID);
+        (new Thread(new Runnable() {
+            public void run() {
+                try {
+                    ConnectionFactory ex = new ConnectionFactory();
+                    ex.setHost("192.168.1.150");
+                    ex.setUsername("admin");
+                    ex.setPassword("admin");
+                    Receiver.this.connection = ex.newConnection();
+                    Receiver.this.channel = Receiver.this.connection.createChannel();
+                    Receiver.this.channel.exchangeDeclare(Receiver.this.exchangeName, "direct", true);
+                    Receiver.this.offlineMsg = Receiver.this.channel.queueDeclare(receiverID, false, false, false, (Map)null);
+                    if(Receiver.this.offlineMsg.getMessageCount() > 0) {
+                        Receiver.this.channel.queueBind(receiverID, Receiver.this.exchangeName, receiverID);
                     }
 
-                    channel.basicQos(1);
-                    //绑定交换机和路由规则
-                    AMQP.Queue.DeclareOk q = channel.queueDeclare();
+                    Receiver.this.channel.basicQos(1);
+                    AMQP.Queue.DeclareOk q = Receiver.this.channel.queueDeclare();
                     String queue = q.getQueue();
-                    channel.queueBind(queue, exchangeName, receiverID);
-                    channel.basicConsume(queue, false, Receiver.this);
+                    Receiver.this.channel.queueBind(queue, Receiver.this.exchangeName, receiverID);
+                    Receiver.this.channel.basicConsume(queue, false, Receiver.this);
+                } catch (Exception var4) {
+                    Log.e("BaseConnector", var4.getMessage());
                 }
-                catch (Exception ex)
-                {
-                    Log.e("BaseConnector", ex.getMessage());
-                }
-            }
-        }).start();
 
+            }
+        })).start();
     }
 
-    /**
-     * 下面这些方法都是实现Consumer接口的
-     **/
-    //当消费者注册完成自动调用
-    public void handleConsumeOk (String consumerTag)
-    {
+    public void handleConsumeOk(String consumerTag) {
         System.out.println("Consumer " + consumerTag + " registered");
     }
 
-    /**
-     * @param consumerTag
-     * @param env
-     * @param props
-     * @param body
-     * @throws IOException
-     */
-    //当消费者接收到消息会自动调用
-    public void handleDelivery (String consumerTag, Envelope env, BasicProperties props, byte[] body) throws IOException
-    {
+    public void handleDelivery(String consumerTag, Envelope env, BasicProperties props, byte[] body) throws IOException {
         String message = new String(body);
-
-        Log.d("离线消息数",String.valueOf(offlineMsg.getMessageCount()));
-        if(offlineMsg!=null && offlineMsg.getMessageCount()==0)
-        {
-            channel.queueDelete(receiverID);
+        Log.d("离线消息数", String.valueOf(this.offlineMsg.getMessageCount()));
+        if(this.offlineMsg != null && this.offlineMsg.getMessageCount() == 0) {
+            this.channel.queueDelete(this.receiverID);
         }
 
         System.out.println(message);
         long deliveryTag = env.getDeliveryTag();
-        channel.basicAck(deliveryTag, false);
-
-
-        Intent intentReceiver = new Intent(context, NotificationBroadcastReceiver.class);
+        this.channel.basicAck(deliveryTag, false);
+        Intent intentReceiver = new Intent(this.context, NotificationBroadcastReceiver.class);
         intentReceiver.setAction("NOTIFICATION_RECEIVER_MESSAGE");
         intentReceiver.putExtra("params", message);
-
-        context.getApplicationContext().sendBroadcast(intentReceiver);
+        this.context.getApplicationContext().sendBroadcast(intentReceiver);
 
         Intent intentAllReceiver = new Intent("NOTIFICATION_RECEIVER_MESSAGE");
         intentAllReceiver.putExtra("params", message);
-        context.getApplicationContext().sendBroadcast(intentAllReceiver);
-        if(receiveListener!=null)
-        {
-            receiveListener.receive(message);
+        this.context.getApplicationContext().sendBroadcast(intentAllReceiver);
+        if(this.receiveListener != null) {
+            this.receiveListener.receive(message);
         }
+
     }
 
-    //下面这些方法可以暂时不用理会
-    public void handleCancelOk (String consumerTag)
-    {
+    public void handleCancelOk(String consumerTag) {
     }
 
-    public void handleCancel (String consumerTag) throws IOException
-    {
+    public void handleCancel(String consumerTag) throws IOException {
     }
 
-    public void handleShutdownSignal (String consumerTag, ShutdownSignalException sig)
-    {
+    public void handleShutdownSignal(String consumerTag, ShutdownSignalException sig) {
     }
 
-    public void handleRecoverOk (String consumerTag)
-    {
+    public void handleRecoverOk(String consumerTag) {
     }
 
-    /**
-     * 设置接收消息事件接口
-     * @param receiveListener 消息接收接口
-     * **/
-    public void setReceiveListener (ReceiveListener receiveListener)
-    {
+    public void setReceiveListener(ReceiveListener receiveListener) {
         this.receiveListener = receiveListener;
     }
 }

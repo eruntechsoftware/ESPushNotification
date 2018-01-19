@@ -19,90 +19,69 @@ import com.eruntech.espushnotification.utils.UserData;
  * 2017/11/16.
  */
 
-public class MessageService extends Service implements ReceiveListener
-{
+public class MessageService extends Service implements ReceiveListener {
+    private Receiver receiver;
     private String packgeName;
     private UserData userData;
 
-    @Override
-    public IBinder onBind (Intent intent)
-    {
-        userData = new UserData(MessageService.this.getApplicationContext());
-        packgeName = getPackageName();
-        return new MessageBinder();
+    public MessageService() {
     }
 
-    @Override
-    public int onStartCommand (Intent intent, int flags, int startId)
-    {
-//        return START_STICKY;
-        return super.onStartCommand(intent,flags,startId);
+    public IBinder onBind(Intent intent) {
+        this.userData = new UserData(this.getApplicationContext());
+        this.packgeName = this.getPackageName();
+        return new MessageService.MessageBinder();
     }
 
-    /**
-     * 启动消息接收器
-     **/
-    public void startReceiver ()
-    {
-        try
-        {
-            Receiver receiver = new Receiver(this.getApplicationContext(), userData.getString("username"));
-            receiver.setReceiveListener(this);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
 
-//            Receiver receiver1 = new Receiver(this.getApplicationContext(), this.getApplication().getPackageName());
-//            receiver1.setReceiveListener(this);
-            // Service被启动时，将会有弹出消息提示[c]
-//            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
+    public void startReceiver() {
+        try {
+            if(this.receiver == null) {
+                this.receiver = new Receiver(this.getApplicationContext(), this.userData.getString("username"));
+                this.receiver.setReceiveListener(this);
+            }
+        } catch (Exception var2) {
+            Log.e("eruntechMessageService:", var2.getMessage());
         }
-        catch (Exception ex)
-        {
-            Log.e("eruntechMessageService:", ex.getMessage());
-        }
+
     }
 
-    @Override
-    public void receive (String message)
-    {
+    public void receive(String message) {
         PushMessage msg = null;
-        try
-        {
-            if(message!=null && message.length()>0)
-            {
+
+        try {
+            if(message != null && message.length() > 0) {
                 msg = PushMessage.jsonToPushMessage(message);
             }
 
-            //如果当前屏幕上运行的不是推送应对的程序，则显示推送消息
-            if (!PackgeManager.isCurrentAppPackgeName(getApplicationContext(), packgeName))
-            {
-                PushNotificationBar.showNotification(this.getApplicationContext(), msg.getTitle(),msg.getContent(),msg.getParameter());
+            if(!PackgeManager.isCurrentAppPackgeName(this.getApplicationContext(), this.packgeName)) {
+                PushNotificationBar.showNotification(this.getApplicationContext(), msg.getTitle(), msg.getContent(), msg.getParameter());
             }
+        } catch (Exception var4) {
+            Log.e("推送消息", var4.getMessage());
         }
-        catch (Exception ex)
-        {
-            Log.e("推送消息", ex.getMessage());
-        }
+
     }
 
-    @Override
-    public boolean onUnbind (Intent intent)
-    {
+    public boolean onUnbind(Intent intent) {
         Log.e("消息状态", "消息服务被卸载");
         return super.onUnbind(intent);
     }
 
-    @Override
-    public void onDestroy ()
-    {
+    public void onDestroy() {
         Log.e("消息服务：", "停止了");
         super.onDestroy();
-
     }
-    public class MessageBinder extends Binder implements IMessageBinder
-    {
-        @Override
-        public void invokeMethodInMessageService ()
-        {
-            startReceiver();
+
+    public class MessageBinder extends Binder implements IMessageBinder {
+        public MessageBinder() {
+        }
+
+        public void invokeMethodInMessageService() {
+            MessageService.this.startReceiver();
         }
     }
 }

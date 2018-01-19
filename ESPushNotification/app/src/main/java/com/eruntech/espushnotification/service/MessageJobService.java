@@ -22,102 +22,69 @@ import com.eruntech.espushnotification.utils.UserData;
  * Created by Ming on 2018/1/10.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//API需要在21及以上
-public class MessageJobService extends JobService implements ReceiveListener
-{
+public class MessageJobService extends JobService implements ReceiveListener {
+    private Receiver receiver;
     private String packgeName;
     private UserData userData;
-
-
-    private Handler handler = new Handler(new Handler.Callback()
-    {
-        @Override
-        public boolean handleMessage (Message msg)
-        {
-
-            JobParameters param = (JobParameters) msg.obj;
-            jobFinished(param, true);
-
-            userData = new UserData(MessageJobService.this.getApplicationContext());
-
+    private Handler handler = new Handler(new Handler.Callback() {
+        public boolean handleMessage(Message msg) {
+            JobParameters param = (JobParameters)msg.obj;
+            MessageJobService.this.jobFinished(param, true);
+            MessageJobService.this.userData = new UserData(MessageJobService.this.getApplicationContext());
             Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
             mIntent.setClass(MessageJobService.this.getApplicationContext(), MessageService.class);
             MessageJobService.this.getApplicationContext().stopService(mIntent);
-
-            startReceiver ();
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
+            MessageJobService.this.startReceiver();
             return true;
         }
     });
 
-    @Override
-    public int onStartCommand (Intent intent, int flags, int startId)
-    {
-        packgeName = getPackageName();
+    public MessageJobService() {
+    }
+
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        this.packgeName = this.getPackageName();
         return START_STICKY;
     }
 
-    @Override
-    public boolean onStartJob (JobParameters params)
-    {
+    public boolean onStartJob(JobParameters params) {
         Message m = Message.obtain();
         m.obj = params;
-        handler.sendMessage(m);
+        this.handler.sendMessage(m);
         return true;
     }
 
-    @Override
-    public boolean onStopJob (JobParameters params)
-    {
-        handler.removeCallbacksAndMessages(null);
+    public boolean onStopJob(JobParameters params) {
+        this.handler.removeCallbacksAndMessages((Object)null);
         return false;
     }
 
-    /**
-     * 启动消息接收器
-     **/
-    public void startReceiver ()
-    {
-        try
-        {
-
-                //User.getUserID(getApplicationContext())
-                Receiver receiver = new Receiver(this.getApplicationContext(), userData.getString("username"));
-                receiver.setReceiveListener(this);
-
-//                Receiver receiver1 = new Receiver(this.getApplicationContext(), this.getApplication().getPackageName());
-//                receiver1.setReceiveListener(this);
-
-            // Service被启动时，将会有弹出消息提示[c]
-//            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
+    public void startReceiver() {
+        try {
+            if(this.receiver == null) {
+                this.receiver = new Receiver(this.getApplicationContext(), this.userData.getString("username"));
+                this.receiver.setReceiveListener(this);
+            }
+        } catch (Exception var2) {
+            Log.e("eruntechMessageService:", var2.getMessage());
         }
-        catch (Exception ex)
-        {
-            Log.e("eruntechMessageService:", ex.getMessage());
-        }
+
     }
 
-    @Override
-    public void receive (String message)
-    {
+    public void receive(String message) {
         PushMessage msg = null;
-        try
-        {
-            if(message!=null && message.length()>0)
-            {
+
+        try {
+            if(message != null && message.length() > 0) {
                 msg = PushMessage.jsonToPushMessage(message);
             }
 
-            //如果当前屏幕上运行的不是推送应对的程序，则显示推送消息
-            if (!PackgeManager.isCurrentAppPackgeName(getApplicationContext(), packgeName))
-            {
+            if(!PackgeManager.isCurrentAppPackgeName(this.getApplicationContext(), this.packgeName)) {
                 PushNotificationBar.showNotification(this.getApplicationContext(), msg.getTitle(), msg.getContent(), msg.getParameter());
             }
+        } catch (Exception var4) {
+            Log.e("推送消息", var4.getMessage());
         }
-        catch (Exception ex)
-        {
-            Log.e("推送消息", ex.getMessage());
-        }
+
     }
 }
