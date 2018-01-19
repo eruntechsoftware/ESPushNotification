@@ -24,7 +24,6 @@ import com.eruntech.espushnotification.utils.UserData;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//API需要在21及以上
 public class MessageJobService extends JobService implements ReceiveListener
 {
-    private Receiver receiver;
     private String packgeName;
     private UserData userData;
 
@@ -82,12 +81,14 @@ public class MessageJobService extends JobService implements ReceiveListener
     {
         try
         {
-            if(receiver==null)
-            {
+
                 //User.getUserID(getApplicationContext())
-                receiver = new Receiver(this.getApplicationContext(), userData.getString("username"));
+                Receiver receiver = new Receiver(this.getApplicationContext(), userData.getString("username"));
                 receiver.setReceiveListener(this);
-            }
+
+                Receiver receiver1 = new Receiver(this.getApplicationContext(), this.getApplication().getPackageName());
+                receiver1.setReceiveListener(this);
+
             // Service被启动时，将会有弹出消息提示[c]
 //            Toast.makeText(this, "[开启我的服务]", Toast.LENGTH_LONG).show();
         }

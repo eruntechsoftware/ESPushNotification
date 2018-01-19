@@ -25,7 +25,7 @@ public class Receiver implements Consumer
     private Context context;
     private AMQP.Queue.DeclareOk offlineMsg;
     private ReceiveListener receiveListener;
-    private String exchangeName = "eruntech";
+    private String exchangeName = "eruntechPush";
     private String receiverID;
     public Receiver (Context context,final String receiverID) throws IOException
     {
@@ -105,6 +105,7 @@ public class Receiver implements Consumer
         System.out.println(message);
         long deliveryTag = env.getDeliveryTag();
         channel.basicAck(deliveryTag, false);
+
 
         Intent intentReceiver = new Intent(context, NotificationBroadcastReceiver.class);
         intentReceiver.setAction("NOTIFICATION_RECEIVER_MESSAGE");
