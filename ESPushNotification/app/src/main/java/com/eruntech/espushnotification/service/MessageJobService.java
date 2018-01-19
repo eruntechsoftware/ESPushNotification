@@ -24,6 +24,7 @@ import com.eruntech.espushnotification.utils.UserData;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//API需要在21及以上
 public class MessageJobService extends JobService implements ReceiveListener {
     private Receiver receiver;
+    private Receiver receiverPush;
     private String packgeName;
     private UserData userData;
     private Handler handler = new Handler(new Handler.Callback() {
@@ -66,8 +67,11 @@ public class MessageJobService extends JobService implements ReceiveListener {
                 this.receiver.setReceiveListener(this);
             }
 
-            Receiver receiver1 = new Receiver(this.getApplicationContext(),getApplication().getPackageName());
-            receiver1.setReceiveListener(this);
+            if(receiverPush==null)
+            {
+                receiverPush = new Receiver(this.getApplicationContext(), getApplication().getPackageName());
+                receiverPush.setReceiveListener(this);
+            }
         } catch (Exception var2) {
             Log.e("eruntechMessageService:", var2.getMessage());
         }

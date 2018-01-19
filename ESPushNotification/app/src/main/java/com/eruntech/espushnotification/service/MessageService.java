@@ -21,6 +21,7 @@ import com.eruntech.espushnotification.utils.UserData;
 
 public class MessageService extends Service implements ReceiveListener {
     private Receiver receiver;
+    private Receiver receiverPush;
     private String packgeName;
     private UserData userData;
 
@@ -44,8 +45,11 @@ public class MessageService extends Service implements ReceiveListener {
                 this.receiver.setReceiveListener(this);
             }
 
-            Receiver receiver1 = new Receiver(this.getApplicationContext(),getApplication().getPackageName());
-            receiver1.setReceiveListener(this);
+            if(receiverPush==null)
+            {
+                receiverPush = new Receiver(this.getApplicationContext(), getApplication().getPackageName());
+                receiverPush.setReceiveListener(this);
+            }
         } catch (Exception var2) {
             Log.e("eruntechMessageService:", var2.getMessage());
         }
