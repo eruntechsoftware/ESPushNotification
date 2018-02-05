@@ -37,6 +37,7 @@ public class ReceiverPushMessage implements Consumer {
                     ex.setHost("192.168.1.150");
                     ex.setUsername("admin");
                     ex.setPassword("admin");
+                    ex.setVirtualHost("pushmessage");
                     ReceiverPushMessage.this.connection = ex.newConnection();
                     ReceiverPushMessage.this.channel = ReceiverPushMessage.this.connection.createChannel();
                     ReceiverPushMessage.this.channel.exchangeDeclare(ReceiverPushMessage.this.exchangeName, "direct", true);
