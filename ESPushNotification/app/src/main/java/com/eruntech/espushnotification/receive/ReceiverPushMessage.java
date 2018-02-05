@@ -64,11 +64,7 @@ public class ReceiverPushMessage implements Consumer {
 
     public void handleDelivery(String consumerTag, Envelope env, BasicProperties props, byte[] body) throws IOException {
         String message = new String(body);
-//        if(this.offlineMsg != null && this.offlineMsg.getMessageCount() == 0) {
-//            this.channel.queueDelete(this.receiverID);
-//        }
-//
-//        System.out.println(message);
+
         long deliveryTag = env.getDeliveryTag();
         this.channel.basicAck(deliveryTag, false);
 
@@ -76,6 +72,10 @@ public class ReceiverPushMessage implements Consumer {
         intentAllReceiver.putExtra("params", message);
         this.context.getApplicationContext().sendBroadcast(intentAllReceiver);
 
+        if(receiveListener!=null)
+        {
+            receiveListener.receive(message);
+        }
     }
 
     public void handleCancelOk(String consumerTag) {

@@ -10,6 +10,9 @@ import android.support.v4.app.NotificationCompat;
 
 import com.eruntech.espushnotification.R;
 import com.eruntech.espushnotification.broadcast.NotificationBroadcastReceiver;
+import com.google.gson.Gson;
+
+import java.util.Map;
 
 
 /**
@@ -20,11 +23,11 @@ import com.eruntech.espushnotification.broadcast.NotificationBroadcastReceiver;
 
 public class PushNotificationBar
 {
-    public static void showNotification (Context mContext,String title, String text, String jsonstr)
+    public static void showNotification (Context mContext,String title, String text, Map<String,String> map)
     {
         Intent intentClick = new Intent("NOTIFICATION_CLICKED");
         intentClick.putExtra(NotificationBroadcastReceiver.TYPE, 1);
-        intentClick.putExtra("params", jsonstr);
+        intentClick.putExtra("params", new Gson().toJson(map));
 
         PendingIntent pendingIntentClick = PendingIntent.getBroadcast(mContext, 0, intentClick, PendingIntent.FLAG_ONE_SHOT);
 

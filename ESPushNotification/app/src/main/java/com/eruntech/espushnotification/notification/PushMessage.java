@@ -1,7 +1,9 @@
 package com.eruntech.espushnotification.notification;
+
 import com.google.gson.Gson;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * 推送消息
@@ -14,20 +16,23 @@ public class PushMessage
     private String tag;
     private String title;
     private String content;
-    private String parameter;
+    private String imageURL;
+    private Map<String,String> parameter;
 
     /**
      * 推送通知
      * @param tag 标记,消息接收者
      * @param title 标题
      * @param content 内容
+     * @param imageURL 消息通知栏图片
      * @param parameter 参数
      * **/
-    public PushMessage(String tag,String title,String content,String parameter)
+    public PushMessage(String tag,String title,String content, String imageURL, Map<String,String> parameter)
     {
         this.tag = tag;
         this.title = title;
         this.content = content;
+        this.imageURL = imageURL;
         this.parameter = parameter;
     }
 
@@ -75,12 +80,29 @@ public class PushMessage
         return content;
     }
 
-    public void setParameter (String parameter)
+    /**
+     * 设置消息图片
+     * @param imageURL 消息图片
+     * **/
+    public void setImageURL (String imageURL)
+    {
+        this.imageURL = imageURL;
+    }
+
+    /**
+     * 获取消息图片
+     * **/
+    public String getImageURL ()
+    {
+        return imageURL;
+    }
+
+    public void setParameter (Map<String,String> parameter)
     {
         this.parameter = parameter;
     }
 
-    public String getParameter ()
+    public Map<String,String> getParameter ()
     {
         return parameter;
     }
