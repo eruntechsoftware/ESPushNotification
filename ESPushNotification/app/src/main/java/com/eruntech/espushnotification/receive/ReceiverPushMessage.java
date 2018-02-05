@@ -43,9 +43,9 @@ public class ReceiverPushMessage implements Consumer {
                     ReceiverPushMessage.this.channel = ReceiverPushMessage.this.connection.createChannel();
                     ReceiverPushMessage.this.channel.exchangeDeclare(ReceiverPushMessage.this.exchangeName, "direct", true);
                     ReceiverPushMessage.this.offlineMsg = ReceiverPushMessage.this.channel.queueDeclare(receiverID, false, false, false, (Map)null);
-                    if(ReceiverPushMessage.this.offlineMsg.getMessageCount() > 0) {
-                        ReceiverPushMessage.this.channel.queueBind(receiverID, ReceiverPushMessage.this.exchangeName, receiverID);
-                    }
+//                    if(ReceiverPushMessage.this.offlineMsg.getMessageCount() > 0) {
+//                        ReceiverPushMessage.this.channel.queueBind(receiverID, ReceiverPushMessage.this.exchangeName, receiverID);
+//                    }
 
                     ReceiverPushMessage.this.channel.basicQos(1);
                     AMQP.Queue.DeclareOk q = ReceiverPushMessage.this.channel.queueDeclare();
