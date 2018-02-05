@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Map;
 
 
-public class Receiver implements Consumer {
+public class ReceiverPushMessage implements Consumer {
     protected Channel channel;
     protected Connection connection;
     private Context context;
@@ -27,7 +27,7 @@ public class Receiver implements Consumer {
     private String exchangeName = "eruntechpush";
     private String receiverID;
 
-    public Receiver(Context context, final String receiverID) throws IOException {
+    public ReceiverPushMessage (Context context, final String receiverID) throws IOException {
         this.receiverID = receiverID;
         this.context = context;
         (new Thread(new Runnable() {
@@ -37,19 +37,19 @@ public class Receiver implements Consumer {
                     ex.setHost("192.168.1.150");
                     ex.setUsername("admin");
                     ex.setPassword("admin");
-                    Receiver.this.connection = ex.newConnection();
-                    Receiver.this.channel = Receiver.this.connection.createChannel();
-                    Receiver.this.channel.exchangeDeclare(Receiver.this.exchangeName, "direct", true);
-                    Receiver.this.offlineMsg = Receiver.this.channel.queueDeclare(receiverID, false, false, false, (Map)null);
-                    if(Receiver.this.offlineMsg.getMessageCount() > 0) {
-                        Receiver.this.channel.queueBind(receiverID, Receiver.this.exchangeName, receiverID);
+                    ReceiverPushMessage.this.connection = ex.newConnection();
+                    ReceiverPushMessage.this.channel = ReceiverPushMessage.this.connection.createChannel();
+                    ReceiverPushMessage.this.channel.exchangeDeclare(ReceiverPushMessage.this.exchangeName, "direct", true);
+                    ReceiverPushMessage.this.offlineMsg = ReceiverPushMessage.this.channel.queueDeclare(receiverID, false, false, false, (Map)null);
+                    if(ReceiverPushMessage.this.offlineMsg.getMessageCount() > 0) {
+                        ReceiverPushMessage.this.channel.queueBind(receiverID, ReceiverPushMessage.this.exchangeName, receiverID);
                     }
 
-                    Receiver.this.channel.basicQos(1);
-                    AMQP.Queue.DeclareOk q = Receiver.this.channel.queueDeclare();
+                    ReceiverPushMessage.this.channel.basicQos(1);
+                    AMQP.Queue.DeclareOk q = ReceiverPushMessage.this.channel.queueDeclare();
                     String queue = q.getQueue();
-                    Receiver.this.channel.queueBind(queue, Receiver.this.exchangeName, receiverID);
-                    Receiver.this.channel.basicConsume(queue, false, Receiver.this);
+                    ReceiverPushMessage.this.channel.queueBind(queue, ReceiverPushMessage.this.exchangeName, receiverID);
+                    ReceiverPushMessage.this.channel.basicConsume(queue, false, ReceiverPushMessage.this);
                 } catch (Exception var4) {
                     Log.e("BaseConnector", var4.getMessage());
                 }

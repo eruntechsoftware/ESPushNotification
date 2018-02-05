@@ -13,7 +13,7 @@ import android.util.Log;
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.eruntech.espushnotification.notification.PushMessage;
 import com.eruntech.espushnotification.notification.PushNotificationBar;
-import com.eruntech.espushnotification.receive.Receiver;
+import com.eruntech.espushnotification.receive.ReceiverPushMessage;
 import com.eruntech.espushnotification.utils.PackgeManager;
 import com.eruntech.espushnotification.utils.UserData;
 
@@ -23,8 +23,8 @@ import com.eruntech.espushnotification.utils.UserData;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//API需要在21及以上
 public class MessageJobService extends JobService implements ReceiveListener {
-    private Receiver receiver;
-    private Receiver receiverPush;
+    private ReceiverPushMessage receiver;
+    private ReceiverPushMessage receiverPush;
     private String packgeName;
     private UserData userData;
     private Handler handler = new Handler(new Handler.Callback() {
@@ -63,13 +63,13 @@ public class MessageJobService extends JobService implements ReceiveListener {
     public void startReceiver() {
         try {
             if(this.userData.getString("username")!=null) {
-                this.receiver = new Receiver(this.getApplicationContext(), this.userData.getString("username"));
+                this.receiver = new ReceiverPushMessage(this.getApplicationContext(), this.userData.getString("username"));
                 this.receiver.setReceiveListener(this);
             }
 
             if(receiverPush==null)
             {
-                receiverPush = new Receiver(this.getApplicationContext(), getApplication().getPackageName());
+                receiverPush = new ReceiverPushMessage(this.getApplicationContext(), getApplication().getPackageName());
                 receiverPush.setReceiveListener(this);
             }
         } catch (Exception var2) {
