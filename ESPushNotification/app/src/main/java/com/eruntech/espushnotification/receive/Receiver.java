@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.eruntech.espushnotification.broadcast.NotificationBroadcastReceiver;
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
@@ -25,7 +24,7 @@ public class Receiver implements Consumer {
     private Context context;
     private AMQP.Queue.DeclareOk offlineMsg;
     private ReceiveListener receiveListener;
-    private String exchangeName = "eruntech";
+    private String exchangeName = "eruntechpush";
     private String receiverID;
 
     public Receiver(Context context, final String receiverID) throws IOException {
@@ -65,25 +64,17 @@ public class Receiver implements Consumer {
 
     public void handleDelivery(String consumerTag, Envelope env, BasicProperties props, byte[] body) throws IOException {
         String message = new String(body);
-        Log.d("离线消息数", String.valueOf(this.offlineMsg.getMessageCount()));
-        if(this.offlineMsg != null && this.offlineMsg.getMessageCount() == 0) {
-            this.channel.queueDelete(this.receiverID);
-        }
-
-        System.out.println(message);
+//        if(this.offlineMsg != null && this.offlineMsg.getMessageCount() == 0) {
+//            this.channel.queueDelete(this.receiverID);
+//        }
+//
+//        System.out.println(message);
         long deliveryTag = env.getDeliveryTag();
         this.channel.basicAck(deliveryTag, false);
-        Intent intentReceiver = new Intent(this.context, NotificationBroadcastReceiver.class);
-        intentReceiver.setAction("NOTIFICATION_RECEIVER_MESSAGE");
-        intentReceiver.putExtra("params", message);
-        this.context.getApplicationContext().sendBroadcast(intentReceiver);
 
         Intent intentAllReceiver = new Intent("NOTIFICATION_RECEIVER_MESSAGE");
         intentAllReceiver.putExtra("params", message);
         this.context.getApplicationContext().sendBroadcast(intentAllReceiver);
-        if(this.receiveListener != null) {
-            this.receiveListener.receive(message);
-        }
 
     }
 
