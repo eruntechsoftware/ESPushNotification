@@ -15,6 +15,7 @@ import com.rabbitmq.client.Envelope;
 import com.rabbitmq.client.ShutdownSignalException;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 
@@ -64,7 +65,7 @@ public class ReceiverPushMessage implements Consumer {
     }
 
     public void handleDelivery(String consumerTag, Envelope env, BasicProperties props, byte[] body) throws IOException {
-        String message = new String(body);
+        String message = new String(body, Charset.forName("gbk"));
 
         long deliveryTag = env.getDeliveryTag();
         this.channel.basicAck(deliveryTag, false);
