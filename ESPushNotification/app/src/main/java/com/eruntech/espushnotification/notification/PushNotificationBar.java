@@ -37,7 +37,7 @@ public class PushNotificationBar
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setSound(defaultSoundUri)
