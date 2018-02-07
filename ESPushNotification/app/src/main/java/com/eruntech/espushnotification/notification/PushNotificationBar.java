@@ -29,11 +29,11 @@ public class PushNotificationBar
         intentClick.putExtra(NotificationBroadcastReceiver.TYPE, 1);
         intentClick.putExtra("params", new Gson().toJson(map));
 
-        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(mContext, 0, intentClick, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentClick = PendingIntent.getBroadcast(mContext, (int) System.currentTimeMillis(), intentClick, PendingIntent.FLAG_ONE_SHOT);
 
         Intent intentCancel = new Intent("NOTIFICATION_CANCELLED");
         intentCancel.putExtra(NotificationBroadcastReceiver.TYPE, -1);
-        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(mContext, 0, intentCancel, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(mContext, (int) System.currentTimeMillis(), intentCancel, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext)
@@ -42,6 +42,7 @@ public class PushNotificationBar
                 .setContentText(text)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntentClick)
+                .setWhen(System.currentTimeMillis())
                 .setDeleteIntent(pendingIntentCancel);
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);

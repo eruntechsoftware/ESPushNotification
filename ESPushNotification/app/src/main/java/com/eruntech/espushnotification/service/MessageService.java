@@ -48,7 +48,7 @@ public class MessageService extends Service implements ReceiveListener {
             if(receiverPush==null)
             {
                 receiverPush = new ReceiverPushMessage(this.getApplicationContext(), getApplication().getPackageName());
-                receiverPush.setReceiveListener(this);
+//                receiverPush.setReceiveListener(this);
             }
         } catch (Exception var2) {
             Log.e("eruntechMessageService:", var2.getMessage());
