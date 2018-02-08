@@ -35,9 +35,9 @@ public class ReceiverPushMessage implements Consumer {
             public void run() {
                 try {
                     ConnectionFactory ex = new ConnectionFactory();
-                    ex.setHost("192.168.1.150");
+                    ex.setHost("47.104.78.112");
                     ex.setUsername("admin");
-                    ex.setPassword("admin");
+                    ex.setPassword("7YWMenHqJXMtgQM8");
                     ex.setVirtualHost("pushmessage");
                     ReceiverPushMessage.this.connection = ex.newConnection();
                     ReceiverPushMessage.this.channel = ReceiverPushMessage.this.connection.createChannel();
