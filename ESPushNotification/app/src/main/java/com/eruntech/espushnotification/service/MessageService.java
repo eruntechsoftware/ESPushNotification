@@ -1,14 +1,11 @@
 package com.eruntech.espushnotification.service;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.eruntech.espushnotification.R;
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.eruntech.espushnotification.notification.PushMessage;
 import com.eruntech.espushnotification.notification.PushNotificationBar;
@@ -40,7 +37,7 @@ public class MessageService extends Service implements ReceiveListener {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         startReceiver();
-        flags = START_STICKY;
+//        flags = START_STICKY;
         return super.onStartCommand(intent, flags, startId);
     }
 
