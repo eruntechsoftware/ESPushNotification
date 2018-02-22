@@ -82,6 +82,7 @@ public class MessageService extends Service implements ReceiveListener {
 
     public void onDestroy() {
         Log.e("消息服务：", "停止了");
+        this.startService(new Intent(this,MessageCoreService.class));
         super.onDestroy();
     }
 

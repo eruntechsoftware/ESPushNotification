@@ -9,7 +9,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.eruntech.espushnotification.service.IMessageBinder;
-import com.eruntech.espushnotification.service.MessageService;
 
 /**
  * Created by Ming on 2017/11/17.
@@ -44,14 +43,14 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
 //                ToastHelper.toastShow(context, "服务启动失败");
 //            }
 
-            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
-            Context localContext = context.getApplicationContext();
-            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
-            mIntent.setClass(localContext, MessageService.class);
-            mIntent.setAction("android.net.conn.CONNECTIVITY_CHANGE");//Service能够匹配的Action
-            mIntent.setPackage("com.eruntech.espushnotification");
-            localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
-            localContext.startService(mIntent);
+//            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
+//            Context localContext = context.getApplicationContext();
+//            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
+//            mIntent.setClass(localContext, MessageService.class);
+//            mIntent.setAction("android.net.conn.CONNECTIVITY_CHANGE");//Service能够匹配的Action
+//            mIntent.setPackage("com.eruntech.espushnotification");
+//            localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
+//            localContext.startService(mIntent);
             //Service被启动时，将会有弹出消息提示
 //            Toast.makeText(context, "[开启我的服务]", Toast.LENGTH_LONG).show();
 
