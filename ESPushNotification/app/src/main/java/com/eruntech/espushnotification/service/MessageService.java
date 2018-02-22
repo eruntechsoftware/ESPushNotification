@@ -82,7 +82,7 @@ public class MessageService extends Service implements ReceiveListener {
     public boolean onUnbind(Intent intent) {
         Log.e("消息状态", "消息服务被卸载");
         Intent intent1 = new Intent();
-        intent1.setAction("eruntech.net.conn.PUSH_MESSAGE");
+        intent1.setAction("eruntech.net.conn.PUSH_START_SERVICE");
         this.sendBroadcast(intent1);
         return super.onUnbind(intent);
     }
@@ -90,7 +90,7 @@ public class MessageService extends Service implements ReceiveListener {
     public void onDestroy() {
         Log.e("消息服务：", "停止了");
         Intent intent = new Intent();
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+        intent.setAction("eruntech.net.conn.PUSH_START_SERVICE");
         this.sendBroadcast(intent);
         super.onDestroy();
     }
