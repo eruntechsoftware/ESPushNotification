@@ -32,9 +32,9 @@ public class MessageJobService extends JobService implements ReceiveListener {
             JobParameters param = (JobParameters)msg.obj;
             MessageJobService.this.jobFinished(param, true);
             MessageJobService.this.userData = new UserData(MessageJobService.this.getApplicationContext());
-            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
-            mIntent.setClass(MessageJobService.this.getApplicationContext(), MessageService.class);
-            MessageJobService.this.getApplicationContext().stopService(mIntent);
+//            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
+//            mIntent.setClass(MessageJobService.this.getApplicationContext(), MessageService.class);
+//            MessageJobService.this.getApplicationContext().stopService(mIntent);
             MessageJobService.this.startReceiver();
             return true;
         }
