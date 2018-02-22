@@ -31,10 +31,12 @@ public class MessageService extends Service implements ReceiveListener {
     public IBinder onBind(Intent intent) {
         this.userData = new UserData(this.getApplicationContext());
         this.packgeName = this.getPackageName();
-        return new MessageService.MessageBinder();
+        return null;
+//        return new MessageService.MessageBinder();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
+        startReceiver();
         return super.onStartCommand(intent, flags, startId);
     }
 
