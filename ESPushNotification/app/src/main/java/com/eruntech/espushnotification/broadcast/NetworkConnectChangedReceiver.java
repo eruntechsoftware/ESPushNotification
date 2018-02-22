@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.eruntech.espushnotification.service.IMessageBinder;
+import com.eruntech.espushnotification.service.MessageService;
 
 /**
  * Created by Ming on 2017/11/17.
@@ -26,6 +27,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     {
         try
         {
+            context.startService(new Intent(context,MessageService.class));
 //            JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
 //            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(context.getPackageName(), MessageJobService.class
 //                    .getName()))
