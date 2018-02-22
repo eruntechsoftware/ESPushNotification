@@ -34,12 +34,12 @@ public class ReceiverPushMessage implements Consumer {
         (new Thread(new Runnable() {
             public void run() {
                 try {
-                    ConnectionFactory ex = new ConnectionFactory();
-                    ex.setHost("192.168.1.150");
-                    ex.setUsername("admin");
-                    ex.setPassword("admin");
-                    ex.setVirtualHost("pushmessage");
-                    ReceiverPushMessage.this.connection = ex.newConnection();
+                    ConnectionFactory factory = new ConnectionFactory();
+                    factory.setHost("47.104.78.112");
+                    factory.setUsername("admin");
+                    factory.setPassword("7YWMenHqJXMtgQM8");
+                    factory.setVirtualHost("pushmessage");
+                    ReceiverPushMessage.this.connection = factory.newConnection();
                     ReceiverPushMessage.this.channel = ReceiverPushMessage.this.connection.createChannel();
                     ReceiverPushMessage.this.channel.exchangeDeclare(ReceiverPushMessage.this.exchangeName, "direct", true);
                     ReceiverPushMessage.this.offlineMsg = ReceiverPushMessage.this.channel.queueDeclare(receiverID, false, false, false, (Map)null);

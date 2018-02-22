@@ -28,9 +28,10 @@ public class BaseConnector
                     //打开连接和创建频道
                     ConnectionFactory factory = new ConnectionFactory();
                     //设置MabbitMQ所在主机ip或者主机名  127.0.0.1即localhost
-                    factory.setHost("192.168.1.150");
+                    factory.setHost("47.104.78.112");
                     factory.setUsername("admin");
-                    factory.setPassword("admin");
+                    factory.setPassword("7YWMenHqJXMtgQM8");
+
                     //创建连接
                     connection = factory.newConnection();
                     //创建频道
