@@ -27,10 +27,12 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     {
         try
         {
-            if(intent.getAction().equals("eruntech.net.conn.PUSH_START_SERVICE"))
-            {
-                context.startService(new Intent(context, MessageService.class));
-            }
+            context.startService(new Intent(context,MessageService.class));
+
+//            if(intent.getAction().equals("eruntech.net.conn.PUSH_START_SERVICE"))
+//            {
+//                context.startService(new Intent(context, MessageService.class));
+//            }
 //            JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
 //            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(context.getPackageName(), MessageJobService.class
 //                    .getName()))
