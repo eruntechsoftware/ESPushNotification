@@ -60,6 +60,18 @@ public class MessageJobService extends JobService implements ReceiveListener {
         return false;
     }
 
+    @Override
+    public boolean onUnbind (Intent intent)
+    {
+        return super.onUnbind(intent);
+    }
+
+    @Override
+    public void onDestroy ()
+    {
+        super.onDestroy();
+    }
+
     public void startReceiver() {
         try {
             if(this.userData.getString("username")!=null) {
