@@ -14,11 +14,6 @@ import com.eruntech.espushnotification.utils.PackgeManager;
 import com.eruntech.espushnotification.utils.UserData;
 
 
-/**
- * 消息服务
- * 2017/11/16.
- */
-
 public class MessageService extends Service implements ReceiveListener {
     private ReceiverPushMessage receiver;
     private ReceiverPushMessage receiverPush;
@@ -32,26 +27,22 @@ public class MessageService extends Service implements ReceiveListener {
         this.userData = new UserData(this.getApplicationContext());
         this.packgeName = this.getPackageName();
         return null;
-//        return new MessageService.MessageBinder();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startReceiver();
-        flags = START_STICKY;
+        this.startReceiver();
         return super.onStartCommand(intent, flags, startId);
     }
 
     public void startReceiver() {
         try {
-            if(this.userData!=null && this.userData.getString("username")!=null) {
+            if(this.userData.getString("username") != null) {
                 this.receiver = new ReceiverPushMessage(this.getApplicationContext(), this.userData.getString("username"));
                 this.receiver.setReceiveListener(this);
             }
 
-            if(receiverPush==null)
-            {
-                receiverPush = new ReceiverPushMessage(this.getApplicationContext(), getApplication().getPackageName());
-//                receiverPush.setReceiveListener(this);
+            if(this.receiverPush == null) {
+                this.receiverPush = new ReceiverPushMessage(this.getApplicationContext(), this.getApplication().getPackageName());
             }
         } catch (Exception var2) {
             Log.e("eruntechMessageService:", var2.getMessage());
@@ -78,18 +69,11 @@ public class MessageService extends Service implements ReceiveListener {
 
     public boolean onUnbind(Intent intent) {
         Log.e("消息状态", "消息服务被卸载");
-        Intent intent1 = new Intent();
-        intent1.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent1);
-
         return super.onUnbind(intent);
     }
 
     public void onDestroy() {
         Log.e("消息服务：", "停止了");
-        Intent intent = new Intent();
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent);
         super.onDestroy();
     }
 
