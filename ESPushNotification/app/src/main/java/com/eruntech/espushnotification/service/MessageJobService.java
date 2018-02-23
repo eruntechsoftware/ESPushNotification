@@ -62,16 +62,16 @@ public class MessageJobService extends JobService implements ReceiveListener {
 
     public boolean onUnbind(Intent intent) {
         Log.e("消息状态", "消息服务被卸载");
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent);
+//        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+//        this.sendBroadcast(intent);
         return super.onUnbind(intent);
     }
 
     public void onDestroy() {
         Log.e("消息服务：", "停止了");
-        Intent intent = new Intent();
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent);
+//        Intent intent = new Intent();
+//        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+//        this.sendBroadcast(intent);
         super.onDestroy();
     }
 
