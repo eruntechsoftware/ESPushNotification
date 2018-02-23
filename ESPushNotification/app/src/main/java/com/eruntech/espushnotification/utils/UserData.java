@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import java.util.Set;
+
 /***
  * 用户数据存储
  *
@@ -43,6 +45,29 @@ public class UserData
 		catch(Exception ex)
 		{
 
+		}
+	}
+
+	/***
+	 * 写入共享数据
+	 *
+	 * @param name 数据名称
+	 * @param value 值
+	 * @throws Exception
+	 */
+	public void put(String name, Set<String> value)
+	{
+		try
+		{
+			if(sharedPreferences != null)
+			{
+				Editor edit = sharedPreferences.edit();
+				edit.putStringSet(name, value);
+				edit.commit();
+			}
+		}
+		catch(Exception ex)
+		{
 		}
 	}
 
@@ -132,6 +157,26 @@ public class UserData
 		try
 		{
 			if(sharedPreferences != null) { return sharedPreferences.getString(name, ""); }
+		}
+		catch(Exception ex)
+		{
+
+		}
+		return null;
+	}
+
+	/***
+	 * 获取共享数据
+	 *
+	 * @param name 数据名称
+	 * @return 共享数据
+	 * @throws Exception
+	 */
+	public Set<String> getStringSet(String name)
+	{
+		try
+		{
+			if(sharedPreferences != null) { return sharedPreferences.getStringSet(name,null); }
 		}
 		catch(Exception ex)
 		{

@@ -17,6 +17,8 @@ import com.eruntech.espushnotification.receive.ReceiverPushMessage;
 import com.eruntech.espushnotification.utils.PackgeManager;
 import com.eruntech.espushnotification.utils.UserData;
 
+import java.util.Set;
+
 
 /**
  * Created by Ming on 2018/1/10.
@@ -77,6 +79,18 @@ public class MessageJobService extends JobService implements ReceiveListener {
 
     public void startReceiver() {
         try {
+            this.userData = new UserData(this.getApplicationContext());
+            //群组标签
+            if(userData!=null && this.userData.getStringSet("grouptags")!=null)
+            {
+                Set<String> sets = this.userData.getStringSet("grouptags");
+                for(String v:sets)
+                {
+                    this.receiver = new ReceiverPushMessage(this.getApplicationContext(), v);
+                    this.receiver.setReceiveListener(this);
+                }
+            }
+
             if(this.userData.getString("username")!=null) {
                 this.receiver = new ReceiverPushMessage(this.getApplicationContext(), this.userData.getString("username"));
 //                this.receiver.setReceiveListener(this);
