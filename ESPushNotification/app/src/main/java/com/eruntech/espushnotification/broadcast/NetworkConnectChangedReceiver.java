@@ -13,6 +13,7 @@ import android.util.Log;
 import com.birthstone.core.helper.ToastHelper;
 import com.eruntech.espushnotification.service.IMessageBinder;
 import com.eruntech.espushnotification.service.MessageJobService;
+import com.eruntech.espushnotification.service.MessageService;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
@@ -32,7 +33,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     {
         try
         {
-//            context.startService(new Intent(context,MessageService.class));
+            context.startService(new Intent(context,MessageService.class));
 
 //            if(intent.getAction().equals("eruntech.net.conn.PUSH_START_SERVICE"))
 //            {
@@ -44,7 +45,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
                         .setPeriodic(1000)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)//运行的网络环境
                         .setMinimumLatency(3000)// 设置任务运行最少延迟时间
-                        .setOverrideDeadline(5000)// 设置deadline，若到期还没有达到规定的条件则会开始执行
+//                        .setOverrideDeadline(5000)// 设置deadline，若到期还没有达到规定的条件则会开始执行
                         .setRequiresCharging(false)// 设置是否充电的条件,默认false
                         .setRequiresDeviceIdle(false)// 设置手机是否空闲的条件,默认false
                     .setPersisted(true)//设备重启之后你的任务是否还要继续执行
