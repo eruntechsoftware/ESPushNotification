@@ -109,7 +109,7 @@ public class MessageService extends Service implements ReceiveListener {
         }
 
         public void invokeMethodInMessageService() {
-            MessageService.this.startReceiver();
+//            MessageService.this.startReceiver();
         }
     }
 }
