@@ -27,14 +27,16 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     {
         try
         {
-            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
-            Context localContext = context.getApplicationContext();
-            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
-            mIntent.setClass(localContext, MessageService.class);
-            mIntent.setAction("android.net.conn.CONNECTIVITY_CHANGE");//Service能够匹配的Action
-            mIntent.setPackage("com.eruntech.espushnotification");
-            localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
-            localContext.startService(mIntent);
+              context.startService(new Intent(context,MessageService.class));
+
+//            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
+//            Context localContext = context.getApplicationContext();
+//            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
+//            mIntent.setClass(localContext, MessageService.class);
+//            mIntent.setAction("android.net.conn.CONNECTIVITY_CHANGE");//Service能够匹配的Action
+//            mIntent.setPackage("com.eruntech.espushnotification");
+//            localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
+//            localContext.startService(mIntent);
 
 //            JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
 //            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(context.getPackageName(), MessageJobService.class
