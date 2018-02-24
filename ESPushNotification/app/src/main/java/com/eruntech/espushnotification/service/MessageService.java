@@ -2,6 +2,7 @@ package com.eruntech.espushnotification.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -30,15 +31,13 @@ public class MessageService extends Service implements ReceiveListener {
     }
 
     public IBinder onBind(Intent intent) {
-
-        return null;
-//        return new MessageService.MessageBinder();
+        return new MessageService.MessageBinder();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         this.userData = new UserData(this.getApplicationContext());
         this.packgeName = this.getPackageName();
-        startReceiver();
+//        startReceiver();
         return START_STICKY;
 //        return super.onStartCommand(intent, flags, startId);
     }
@@ -105,12 +104,12 @@ public class MessageService extends Service implements ReceiveListener {
         super.onDestroy();
     }
 
-//    public class MessageBinder extends Binder implements IMessageBinder {
-//        public MessageBinder() {
-//        }
-//
-//        public void invokeMethodInMessageService() {
-//            MessageService.this.startReceiver();
-//        }
-//    }
+    public class MessageBinder extends Binder implements IMessageBinder {
+        public MessageBinder() {
+        }
+
+        public void invokeMethodInMessageService() {
+            MessageService.this.startReceiver();
+        }
+    }
 }
