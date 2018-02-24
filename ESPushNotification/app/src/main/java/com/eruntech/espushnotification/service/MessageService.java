@@ -38,9 +38,8 @@ public class MessageService extends Service implements ReceiveListener {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
 //        startReceiver();
-        flags = START_STICKY;
-
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
+//        return super.onStartCommand(intent, flags, startId);
     }
 
     public void startReceiver() {
