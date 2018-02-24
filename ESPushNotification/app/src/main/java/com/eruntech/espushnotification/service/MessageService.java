@@ -31,15 +31,15 @@ public class MessageService extends Service implements ReceiveListener {
     }
 
     public IBinder onBind(Intent intent) {
-        return new MessageService.MessageBinder();
+        this.userData = new UserData(this.getApplicationContext());
+        this.packgeName = this.getPackageName();
+        return null;
+//        return new MessageService.MessageBinder();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.userData = new UserData(this.getApplicationContext());
-        this.packgeName = this.getPackageName();
-//        startReceiver();
-        return START_STICKY;
-//        return super.onStartCommand(intent, flags, startId);
+        startReceiver();
+        return super.onStartCommand(intent, flags, startId);
     }
 
     public void startReceiver() {
@@ -98,9 +98,9 @@ public class MessageService extends Service implements ReceiveListener {
 
     public void onDestroy() {
         Log.e("消息服务：", "停止了");
-        Intent intent = new Intent();
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent);
+//        Intent intent = new Intent();
+//        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+//        this.sendBroadcast(intent);
         super.onDestroy();
     }
 
