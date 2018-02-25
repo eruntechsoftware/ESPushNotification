@@ -104,6 +104,7 @@ public class MessageService extends Service implements ReceiveListener {
         for (ReceiverPushMessage pushMessage:receiverPushMessageList)
         {
             pushMessage.unBind();
+            pushMessage=null;
         }
         Intent intent = new Intent();
         intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
