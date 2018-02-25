@@ -26,7 +26,7 @@ public class ReceiverPushMessage implements Consumer {
     private AMQP.Queue.DeclareOk offlineMsg;
     private ReceiveListener receiveListener;
     private String exchangeName = "eruntechpush";
-    private String receiverID;
+    private String receiverID,queue;
 
     public ReceiverPushMessage (Context context, final String receiverID) throws IOException {
         this.receiverID = receiverID;
@@ -49,7 +49,7 @@ public class ReceiverPushMessage implements Consumer {
 
                     ReceiverPushMessage.this.channel.basicQos(1);
                     AMQP.Queue.DeclareOk q = ReceiverPushMessage.this.channel.queueDeclare();
-                    String queue = q.getQueue();
+                    queue = q.getQueue();
                     ReceiverPushMessage.this.channel.queueBind(queue, ReceiverPushMessage.this.exchangeName, receiverID);
                     ReceiverPushMessage.this.channel.basicConsume(queue, false, ReceiverPushMessage.this);
                 } catch (Exception var4) {
@@ -94,5 +94,29 @@ public class ReceiverPushMessage implements Consumer {
 
     public void setReceiveListener(ReceiveListener receiveListener) {
         this.receiveListener = receiveListener;
+    }
+
+    //卸载绑定，并清理内存
+    public void unBind()
+    {
+        try
+        {
+            if(channel!=null)
+            {
+                channel.exchangeUnbind(queue, exchangeName, receiverID);
+                channel=null;
+            }
+
+            if(connection!=null)
+            {
+                connection.close();
+                connection.abort();
+                connection=null;
+            }
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 }

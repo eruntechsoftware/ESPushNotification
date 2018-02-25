@@ -13,6 +13,8 @@ import com.eruntech.espushnotification.receive.ReceiverPushMessage;
 import com.eruntech.espushnotification.utils.PackgeManager;
 import com.eruntech.espushnotification.utils.UserData;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -22,11 +24,10 @@ import java.util.Set;
  */
 
 public class MessageService extends Service implements ReceiveListener {
-    private ReceiverPushMessage receiver;
-    private ReceiverPushMessage receiverPush;
+
     private String packgeName;
     private UserData userData;
-
+    private List<ReceiverPushMessage> receiverPushMessageList = new LinkedList<>();
     public MessageService() {
     }
 
@@ -51,21 +52,23 @@ public class MessageService extends Service implements ReceiveListener {
                 Set<String> sets = this.userData.getStringSet("grouptags");
                 for(String v:sets)
                 {
-                    this.receiver = new ReceiverPushMessage(this.getApplicationContext(), v);
-                    this.receiver.setReceiveListener(this);
+                    ReceiverPushMessage receiver = new ReceiverPushMessage(this.getApplicationContext(), v);
+                    receiver.setReceiveListener(this);
+                    receiverPushMessageList.add(receiver);
                 }
             }
 
             if(this.userData.getString("username")!=null) {
-                this.receiver = new ReceiverPushMessage(this.getApplicationContext(), this.userData.getString("username"));
-                this.receiver.setReceiveListener(this);
+                ReceiverPushMessage receiver = new ReceiverPushMessage(this.getApplicationContext(), this.userData.getString("username"));
+                receiver.setReceiveListener(this);
+                receiverPushMessageList.add(receiver);
             }
 
-            if(receiverPush==null)
-            {
-                receiverPush = new ReceiverPushMessage(this.getApplicationContext(), getApplication().getPackageName());
-//                receiverPush.setReceiveListener(this);
-            }
+
+            ReceiverPushMessage receiverPush = new ReceiverPushMessage(this.getApplicationContext(), getApplication().getPackageName());
+            receiverPush.setReceiveListener(this);
+            receiverPushMessageList.add(receiverPush);
+
         } catch (Exception var2) {
             Log.e("eruntechMessageService:", var2.getMessage());
         }
@@ -98,6 +101,10 @@ public class MessageService extends Service implements ReceiveListener {
 
     public void onDestroy() {
         Log.e("消息服务：", "停止了");
+        for (ReceiverPushMessage pushMessage:receiverPushMessageList)
+        {
+            pushMessage.unBind();
+        }
         Intent intent = new Intent();
         intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
         this.sendBroadcast(intent);
