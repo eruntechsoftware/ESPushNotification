@@ -38,9 +38,7 @@ public class PushMessageService extends Service
     public void onCreate ()
     {
         super.onCreate();
-        serviceContext = getApplicationContext();
-        this.userData = new UserData(serviceContext);
-        this.packgeName = this.getPackageName();
+
     }
 
     @Override
@@ -48,6 +46,9 @@ public class PushMessageService extends Service
     {
         try
         {
+            serviceContext = getApplicationContext();
+            this.userData = new UserData(serviceContext);
+            this.packgeName = this.getPackageName();
             startReceiver();
         }
         catch (Exception ex)
