@@ -123,6 +123,7 @@ public class PushMessageService extends Service
             pushMessage.unBind();
             pushMessage = null;
         }
+        receiverPushHashMap.clear();
         Intent intent = new Intent();
         intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
         this.sendBroadcast(intent);
