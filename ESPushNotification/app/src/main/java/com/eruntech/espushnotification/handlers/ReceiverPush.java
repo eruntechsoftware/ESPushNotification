@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.eruntech.espushnotification.interfaces.IReceiveCallback;
 import com.eruntech.espushnotification.notification.PushMessage;
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -46,29 +47,18 @@ public class ReceiverPush implements Consumer
                     //创建频道
                     channel = connection.createChannel();
 
-                    channel.exchangeDeclare(exchangeName, "direct", true);
-                    channel.queueDeclare(ReceiverPush.this.tag, false, false, false, null);
-                    channel.basicQos(1);
-                    channel.basicConsume(ReceiverPush.this.tag, false, ReceiverPush.this);
+//                    channel.exchangeDeclare(exchangeName, "direct", true);
+//                    channel.queueDeclare(ReceiverPush.this.tag, false, false, false, null);
+//                    channel.basicQos(1);
+//                    channel.basicConsume(ReceiverPush.this.tag, false, ReceiverPush.this);
 
-//                    ConnectionFactory factory = new ConnectionFactory();
-//                    factory.setHost("47.104.78.112");
-//                    factory.setUsername("admin");
-//                    factory.setPassword("7YWMenHqJXMtgQM8");
-//                    factory.setVirtualHost("pushmessage");
-//                    ReceiverPush.this.connection = factory.newConnection();
-//                    ReceiverPush.this.channel = ReceiverPush.this.connection.createChannel();
-//                    ReceiverPush.this.channel.exchangeDeclare(ReceiverPush.this.exchangeName, "direct", true);
-//                    ReceiverPush.this.offlineMsg = ReceiverPush.this.channel.queueDeclare(receiverID, false, false, false, (Map)null);
-////                    if(ReceiverPush.this.offlineMsg.getMessageCount() > 0) {
-////                        ReceiverPush.this.channel.queueBind(receiverID, ReceiverPush.this.exchangeName, receiverID);
-////                    }
-//
-//                    ReceiverPush.this.channel.basicQos(1);
-//                    AMQP.Queue.DeclareOk q = ReceiverPush.this.channel.queueDeclare();
-//                    queue = q.getQueue();
-//                    ReceiverPush.this.channel.queueBind(queue, ReceiverPush.this.exchangeName, receiverID);
-//                    ReceiverPush.this.channel.basicConsume(queue, false, ReceiverPush.this);
+                    channel.exchangeDeclare(exchangeName, "direct",true);
+                    channel.basicQos(1);
+                    //绑定交换机和路由规则
+                    AMQP.Queue.DeclareOk q = channel.queueDeclare();
+                    String queue = q.getQueue();
+                    channel.queueBind(queue, exchangeName, ReceiverPush.this.tag);
+                    channel.basicConsume(queue, false, ReceiverPush.this);
                 }
                 catch (Exception var4)
                 {
