@@ -5,7 +5,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
 import com.eruntech.espushnotification.service.IMessageBinder;
@@ -23,12 +25,23 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     public static final String TAG1 = "NetWork";
 
     @Override
-    public void onReceive (Context context, Intent intent)
+    public void onReceive (final Context context, Intent intent)
     {
         try
         {
-            Intent serviceIntent = new Intent(context, PushMessageService.class);
-            context.startService(serviceIntent);
+            final Intent serviceIntent = new Intent(context, PushMessageService.class);
+            context.stopService(serviceIntent);
+            Handler handler=new Handler(new Handler.Callback()
+            {
+                @Override
+                public boolean handleMessage (Message message)
+                {
+                    context.startService(serviceIntent);
+                    return true;
+                }
+            });
+            handler.sendEmptyMessageDelayed(0,2000);
+
 //            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
 //            Context localContext = context.getApplicationContext();
 //            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
