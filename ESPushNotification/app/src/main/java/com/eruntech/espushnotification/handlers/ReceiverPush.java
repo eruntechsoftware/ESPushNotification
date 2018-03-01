@@ -91,7 +91,7 @@ public class ReceiverPush implements Consumer
 
         if (receiveCallback != null)
         {
-            receiveCallback.callback(message);
+            receiveCallback.callback(body);
         }
     }
 

@@ -4,8 +4,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.eruntech.espushnotification.interfaces.IMessageObjSearcherHandler;
-import com.eruntech.espushnotification.notification.PushMessage;
 import com.eruntech.espushnotification.service.PushMessageService;
+
+import java.nio.charset.Charset;
 
 /**
  * 个人聊天消息，将接收到的消息通知服务端当前消息已经接收
@@ -14,6 +15,7 @@ import com.eruntech.espushnotification.service.PushMessageService;
 public class HPushMessageHandler implements IMessageObjSearcherHandler
 {
 
+    private String message;
     public HPushMessageHandler ()
     {
         try
@@ -27,12 +29,13 @@ public class HPushMessageHandler implements IMessageObjSearcherHandler
 
 
     @Override
-    public void handle (PushMessage message)
+    public void handle (byte[] body)
     {
         try
         {
+
             Intent intentAllReceiver = new Intent("NOTIFICATION_RECEIVER_MESSAGE");
-            intentAllReceiver.putExtra("params", message.toJsonString());
+            intentAllReceiver.putExtra("params", message);
             PushMessageService.getServiceContext().sendBroadcast(intentAllReceiver);
         }
         catch (Exception var4)
@@ -42,8 +45,9 @@ public class HPushMessageHandler implements IMessageObjSearcherHandler
     }
 
     @Override
-    public Boolean isPicked (PushMessage message)
+    public Boolean isPicked (byte[] body)
     {
+        message = new String(body, Charset.forName("gbk"));
         //判断消息是个人消息
         if (message != null)
         {

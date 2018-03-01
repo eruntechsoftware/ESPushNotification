@@ -3,7 +3,6 @@ package com.eruntech.espushnotification.handlers;
 import android.os.Handler;
 
 import com.eruntech.espushnotification.interfaces.IMessageObjSearcherHandler;
-import com.eruntech.espushnotification.notification.PushMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class ObjectSearcherHandler
         this.handlers = new ArrayList<IMessageObjSearcherHandler>(handlers);
     }
 
-    public void search (PushMessage message)
+    public void search (byte[] message)
     {
         for (IMessageObjSearcherHandler handler : handlers)
         {

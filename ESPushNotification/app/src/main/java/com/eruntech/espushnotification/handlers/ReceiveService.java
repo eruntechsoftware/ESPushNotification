@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.eruntech.espushnotification.interfaces.IMessageObjSearcherHandler;
 import com.eruntech.espushnotification.interfaces.IReceiveCallback;
-import com.eruntech.espushnotification.notification.PushMessage;
 
 import java.io.IOException;
 
@@ -47,7 +46,7 @@ public class ReceiveService implements IReceiveCallback
     }
 
     @Override
-    public void callback (PushMessage message)
+    public void callback (byte[] message)
     {
         objectSearcherHandler.search(message);
     }
