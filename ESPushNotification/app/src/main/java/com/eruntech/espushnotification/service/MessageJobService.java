@@ -10,10 +10,10 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.eruntech.espushnotification.handlers.ReceiverPush;
 import com.eruntech.espushnotification.listener.ReceiveListener;
 import com.eruntech.espushnotification.notification.PushMessage;
 import com.eruntech.espushnotification.notification.PushNotificationBar;
-import com.eruntech.espushnotification.receive.ReceiverPushMessage;
 import com.eruntech.espushnotification.utils.PackgeManager;
 import com.eruntech.espushnotification.utils.UserData;
 
@@ -25,7 +25,7 @@ import java.util.Set;
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//API需要在21及以上
 public class MessageJobService extends JobService implements ReceiveListener {
-    private ReceiverPushMessage receiver;
+    private ReceiverPush receiver;
 
     private String packgeName;
     private UserData userData;
@@ -86,13 +86,13 @@ public class MessageJobService extends JobService implements ReceiveListener {
                 Set<String> sets = this.userData.getStringSet("grouptags");
                 for(String v:sets)
                 {
-                    this.receiver = new ReceiverPushMessage(this.getApplicationContext(), v);
+                    this.receiver = new ReceiverPush(this.getApplicationContext(), v);
                     this.receiver.setReceiveListener(this);
                 }
             }
 
             if(this.userData.getString("username")!=null) {
-                this.receiver = new ReceiverPushMessage(this.getApplicationContext(), this.userData.getString("username"));
+                this.receiver = new ReceiverPush(this.getApplicationContext(), this.userData.getString("username"));
 //                this.receiver.setReceiveListener(this);
             }
         } catch (Exception var2) {
