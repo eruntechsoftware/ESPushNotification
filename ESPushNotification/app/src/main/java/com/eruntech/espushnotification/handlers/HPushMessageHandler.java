@@ -6,7 +6,6 @@ import com.eruntech.espushnotification.interfaces.IMessageObjSearcherHandler;
 import com.eruntech.espushnotification.notification.PushMessage;
 import com.eruntech.espushnotification.notification.PushNotificationBar;
 import com.eruntech.espushnotification.service.MessageService;
-import com.eruntech.espushnotification.utils.PackgeManager;
 
 /**
  * 个人聊天消息，将接收到的消息通知服务端当前消息已经接收
@@ -32,11 +31,11 @@ public class HPushMessageHandler implements IMessageObjSearcherHandler
     {
         try
         {
-            if (!PackgeManager.isCurrentAppPackgeName(MessageService.getServiceContext(), MessageService.getServiceContext().getPackageName()))
-            {
+//            if (!PackgeManager.isCurrentAppPackgeName(MessageService.getServiceContext(), MessageService.getServiceContext().getPackageName()))
+//            {
                 PushNotificationBar.showNotification(MessageService.getServiceContext(), message.getTitle(), message
                         .getContent(), message.getParameter());
-            }
+//            }
         }
         catch (Exception var4)
         {
