@@ -27,7 +27,7 @@ public class ReceiverPush implements Consumer
     {
         this.tag = tag;
         this.receiveCallback = receiveCallback;
-        (new Thread(new Runnable()
+        new Thread(new Runnable()
         {
             public void run ()
             {
@@ -76,7 +76,7 @@ public class ReceiverPush implements Consumer
                 }
 
             }
-        })).start();
+        }).start();
     }
 
     public void handleConsumeOk (String consumerTag)
