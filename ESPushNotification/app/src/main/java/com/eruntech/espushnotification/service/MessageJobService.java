@@ -10,11 +10,8 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.eruntech.espushnotification.handlers.ReceiveService;
 import com.eruntech.espushnotification.handlers.ReceiverPush;
-import com.eruntech.espushnotification.listener.ReceiveListener;
-import com.eruntech.espushnotification.notification.PushMessage;
-import com.eruntech.espushnotification.notification.PushNotificationBar;
-import com.eruntech.espushnotification.utils.PackgeManager;
 import com.eruntech.espushnotification.utils.UserData;
 
 import java.util.Set;
@@ -24,7 +21,7 @@ import java.util.Set;
  * Created by Ming on 2018/1/10.
  */
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)//API需要在21及以上
-public class MessageJobService extends JobService implements ReceiveListener {
+public class MessageJobService extends JobService{
     private ReceiverPush receiver;
 
     private String packgeName;
@@ -77,43 +74,37 @@ public class MessageJobService extends JobService implements ReceiveListener {
         super.onDestroy();
     }
 
-    public void startReceiver() {
-        try {
+    public void startReceiver ()
+    {
+        try
+        {
             this.userData = new UserData(this.getApplicationContext());
             //群组标签
-            if(userData!=null && this.userData.getStringSet("grouptags")!=null)
+            if (userData != null && this.userData.getStringSet("grouptags") != null)
             {
                 Set<String> sets = this.userData.getStringSet("grouptags");
-                for(String v:sets)
+                for (String v : sets)
                 {
-                    this.receiver = new ReceiverPush(this.getApplicationContext(), v);
-                    this.receiver.setReceiveListener(this);
+                    ReceiveService receiver = new ReceiveService(this.getApplicationContext(), v);
+                    receiver.startPush();
                 }
             }
 
-            if(this.userData.getString("username")!=null) {
-                this.receiver = new ReceiverPush(this.getApplicationContext(), this.userData.getString("username"));
-//                this.receiver.setReceiveListener(this);
+            if (this.userData.getString("username") != null)
+            {
+                ReceiveService receiver = new ReceiveService(this.getApplicationContext(), this.userData
+                        .getString("username"));
+                receiver.startPush();
             }
-        } catch (Exception var2) {
-            Log.e("eruntechMessageService:", var2.getMessage());
+
+            ReceiveService receiver = new ReceiveService(this.getApplicationContext(), getApplication()
+                    .getPackageName());
+            receiver.startPush();
+
         }
-
-    }
-
-    public void receive(String message) {
-        PushMessage msg = null;
-
-        try {
-            if(message != null && message.length() > 0) {
-                msg = PushMessage.jsonToPushMessage(message);
-            }
-
-            if(!PackgeManager.isCurrentAppPackgeName(this.getApplicationContext(), this.packgeName)) {
-                PushNotificationBar.showNotification(this.getApplicationContext(), msg.getTitle(), msg.getContent(), msg.getParameter());
-            }
-        } catch (Exception var4) {
-            Log.e("推送消息", var4.getMessage());
+        catch (Exception var2)
+        {
+            Log.e("eruntechMessageService:", var2.getMessage());
         }
 
     }
