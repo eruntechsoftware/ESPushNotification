@@ -41,6 +41,11 @@ public class PushMessageService extends Service
 
     }
 
+    public static Context getServiceContext ()
+    {
+        return serviceContext;
+    }
+
     @Override
     public int onStartCommand (Intent intent, int flags, int startId)
     {
