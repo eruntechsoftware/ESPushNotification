@@ -3,6 +3,7 @@ package com.eruntech.espushnotification;
 import android.content.Context;
 import android.content.Intent;
 
+import com.eruntech.espushnotification.service.PushMessageService;
 import com.eruntech.espushnotification.utils.UserData;
 
 import java.util.HashSet;
@@ -56,9 +57,8 @@ public class ESPushRegister
             UserData userData = new UserData(context);
             userData.put("grouptags", tagsets);
 
-            Intent intent = new Intent();
-            intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-            context.sendBroadcast(intent);
+            Intent serviceIntent = new Intent(context, PushMessageService.class);
+            context.startService(serviceIntent);
         }
         catch (Exception ex)
         {

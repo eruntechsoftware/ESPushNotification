@@ -3,54 +3,57 @@ package com.eruntech.espushnotification.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.eruntech.espushnotification.handlers.ReceiveService;
 import com.eruntech.espushnotification.handlers.ReceiverPush;
 import com.eruntech.espushnotification.utils.UserData;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Set;
 
 
 /**
- * 消息服务
- * 2017/11/16.
+ * 心跳服务
+ * on 2018/2/26.
  */
 
-public class MessageService extends Service
+public class PushMessageService extends Service
 {
     private static Context serviceContext;
     private String packgeName;
     private UserData userData;
-    public static List<ReceiverPush> receiverPushMessageList = new LinkedList<>();
+    public static HashMap<String, ReceiverPush> receiverPushHashMap = new HashMap<>();
 
-    public MessageService ()
-    {
-        serviceContext = getApplicationContext();
-    }
-
-    public static Context getServiceContext ()
-    {
-        return serviceContext;
-    }
-
+    @Nullable
+    @Override
     public IBinder onBind (Intent intent)
     {
-        this.userData = new UserData(this.getApplicationContext());
-        this.packgeName = this.getPackageName();
         return null;
-//        return new MessageService.MessageBinder();
     }
 
+    @Override
+    public void onCreate ()
+    {
+        super.onCreate();
+        serviceContext = getApplicationContext();
+        this.userData = new UserData(serviceContext);
+        this.packgeName = this.getPackageName();
+    }
+
+    @Override
     public int onStartCommand (Intent intent, int flags, int startId)
     {
-
-        startReceiver();
-        return super.onStartCommand(intent, flags, startId);
+        try
+        {
+            startReceiver();
+        }
+        catch (Exception ex)
+        {
+        }
+        return START_STICKY;
     }
 
     public void startReceiver ()
@@ -64,21 +67,30 @@ public class MessageService extends Service
                 Set<String> sets = this.userData.getStringSet("grouptags");
                 for (String v : sets)
                 {
-                    ReceiveService receiver = new ReceiveService(this.getApplicationContext(), v);
-                    receiver.startPush();
+                    if (!receiverPushHashMap.containsKey(v))
+                    {
+                        ReceiveService receiver = new ReceiveService(this.getApplicationContext(), v);
+                        receiverPushHashMap.put(v, receiver.startPush());
+                    }
                 }
             }
 
             if (this.userData.getString("username") != null)
             {
-                ReceiveService receiver = new ReceiveService(this.getApplicationContext(), this.userData
-                        .getString("username"));
-                receiver.startPush();
+                if (!receiverPushHashMap.containsKey(this.userData.getString("username")))
+                {
+                    ReceiveService receiver = new ReceiveService(this.getApplicationContext(), this.userData
+                            .getString("username"));
+                    receiverPushHashMap.put(this.userData.getString("username"), receiver.startPush());
+                }
             }
 
-            ReceiveService receiver = new ReceiveService(this.getApplicationContext(), getApplication()
-                    .getPackageName());
-            receiver.startPush();
+            if (!receiverPushHashMap.containsKey(getApplication().getPackageName()))
+            {
+                ReceiveService receiver = new ReceiveService(this.getApplicationContext(), getApplication()
+                        .getPackageName());
+                receiverPushHashMap.put(this.userData.getString("username"), receiver.startPush());
+            }
 
         }
         catch (Exception var2)
@@ -87,6 +99,7 @@ public class MessageService extends Service
         }
 
     }
+
 
     public boolean onUnbind (Intent intent)
     {
@@ -99,7 +112,7 @@ public class MessageService extends Service
     public void onDestroy ()
     {
         Log.e("消息服务：", "停止了");
-        for (ReceiverPush pushMessage : receiverPushMessageList)
+        for (ReceiverPush pushMessage : receiverPushHashMap.values())
         {
             pushMessage.unBind();
             pushMessage = null;
@@ -108,17 +121,5 @@ public class MessageService extends Service
         intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
         this.sendBroadcast(intent);
         super.onDestroy();
-    }
-
-    public class MessageBinder extends Binder implements IMessageBinder
-    {
-        public MessageBinder ()
-        {
-        }
-
-        public void invokeMethodInMessageService ()
-        {
-//            MessageService.this.startReceiver();
-        }
     }
 }

@@ -9,7 +9,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.eruntech.espushnotification.service.IMessageBinder;
-import com.eruntech.espushnotification.service.MessageService;
+import com.eruntech.espushnotification.service.PushMessageService;
 
 /**
  * Created by Ming on 2017/11/17.
@@ -27,14 +27,16 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     {
         try
         {
-            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
-            Context localContext = context.getApplicationContext();
-            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
-            mIntent.setClass(localContext, MessageService.class);
-            mIntent.setAction("android.net.conn.CONNECTIVITY_CHANGE");//Service能够匹配的Action
-            mIntent.setPackage("com.eruntech.espushnotification");
-            localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
-            localContext.startService(mIntent);
+            Intent serviceIntent = new Intent(context, PushMessageService.class);
+            context.startService(serviceIntent);
+//            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
+//            Context localContext = context.getApplicationContext();
+//            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
+//            mIntent.setClass(localContext, MessageService.class);
+//            mIntent.setAction("android.net.conn.CONNECTIVITY_CHANGE");//Service能够匹配的Action
+//            mIntent.setPackage("com.eruntech.espushnotification");
+//            localContext.bindService(mIntent, messageServiceConnection, Context.BIND_AUTO_CREATE);
+//            localContext.startService(mIntent);
 
 //            JobScheduler jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
 //            JobInfo jobInfo = new JobInfo.Builder(1, new ComponentName(context.getPackageName(), MessageJobService.class

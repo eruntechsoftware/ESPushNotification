@@ -5,7 +5,6 @@ import android.content.Context;
 import com.eruntech.espushnotification.interfaces.IMessageObjSearcherHandler;
 import com.eruntech.espushnotification.interfaces.IReceiveCallback;
 import com.eruntech.espushnotification.notification.PushMessage;
-import com.eruntech.espushnotification.service.MessageService;
 
 import java.io.IOException;
 
@@ -56,23 +55,16 @@ public class ReceiveService implements IReceiveCallback
     /**
      * 启动群聊天接收器
      * **/
-    public void startPush()
+    public ReceiverPush startPush()
     {
-        new Thread(new Runnable()
+        try
         {
-            @Override
-            public void run ()
-            {
-                try
-                {
-                    MessageService.receiverPushMessageList.add(new ReceiverPush(tag, ReceiveService.this));
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
+            return new ReceiverPush(tag, ReceiveService.this);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
