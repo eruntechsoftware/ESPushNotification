@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class PushMessage
 {
+    private int actionCode;
     private String tag;
     private String title;
     private String content;
@@ -21,19 +22,31 @@ public class PushMessage
 
     /**
      * 推送通知
+     * @param actionCode 动作标志
      * @param tag 标记,消息接收者
      * @param title 标题
      * @param content 内容
      * @param imageURL 消息通知栏图片
      * @param parameter 参数
      * **/
-    public PushMessage(String tag,String title,String content, String imageURL, Map<String,String> parameter)
+    public PushMessage(int actionCode,String tag,String title,String content, String imageURL, Map<String,String> parameter)
     {
+        this.actionCode = actionCode;
         this.tag = tag;
         this.title = title;
         this.content = content;
         this.imageURL = imageURL;
         this.parameter = parameter;
+    }
+
+    public int getActionCode ()
+    {
+        return actionCode;
+    }
+
+    public void setActionCode (int actionCode)
+    {
+        this.actionCode = actionCode;
     }
 
     public void setTag (String tag)
