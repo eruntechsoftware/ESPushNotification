@@ -118,12 +118,12 @@ public class PushMessageService extends Service
     public void onDestroy ()
     {
         Log.e("消息服务：", "停止了");
-        for (ReceiverPush pushMessage : receiverPushHashMap.values())
-        {
-            pushMessage.unBind();
-            pushMessage = null;
-        }
-        receiverPushHashMap.clear();
+//        for (ReceiverPush pushMessage : receiverPushHashMap.values())
+//        {
+//            pushMessage.unBind();
+//            pushMessage = null;
+//        }
+//        receiverPushHashMap.clear();
         Intent intent = new Intent();
         intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
         this.sendBroadcast(intent);
