@@ -59,7 +59,6 @@ public class PushMessageService extends Service
             serviceContext = getApplicationContext();
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
-            startReceiver();
             runRecevivePushTask ();
         }
         catch (Exception ex)
@@ -141,9 +140,9 @@ public class PushMessageService extends Service
                         Log.e("消息服务","服务终止");
                         pushMessage = null;
                     }
-//                    startReceiver();
+                    startReceiver();
                 }
-            }, 500, 1000*30);
+            }, 500, 1000*60*60);
 
         }
         catch (Exception ex)
