@@ -114,7 +114,6 @@ public class ReceiverPush implements Consumer
 
             if (connection != null)
             {
-                connection.close();
                 connection.abort();
                 connection = null;
             }

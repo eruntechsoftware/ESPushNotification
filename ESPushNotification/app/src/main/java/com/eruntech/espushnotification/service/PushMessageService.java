@@ -103,7 +103,7 @@ public class PushMessageService extends Service
                         .getPackageName());
                 receiverPushHashMap.put(this.userData.getString("username"), receiver.startPush());
             }
-
+            Log.e("消息服务","服务全部启动完成");
         }
         catch (Exception var2)
         {
@@ -138,6 +138,7 @@ public class PushMessageService extends Service
                     for (ReceiverPush pushMessage : receiverPushHashMap.values())
                     {
                         pushMessage.unBind();
+                        Log.e("消息服务","服务终止");
                         pushMessage = null;
                     }
 //                    startReceiver();
