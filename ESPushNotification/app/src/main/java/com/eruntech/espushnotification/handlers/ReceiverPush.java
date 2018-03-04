@@ -106,11 +106,11 @@ public class ReceiverPush implements Consumer
     {
         try
         {
-            if (channel != null)
-            {
-                channel.exchangeUnbind(tag, exchangeName, tag);
-                channel = null;
-            }
+//            if (channel != null)
+//            {
+//                channel.exchangeUnbind(tag, exchangeName, tag);
+//                channel = null;
+//            }
 
             if (connection != null)
             {

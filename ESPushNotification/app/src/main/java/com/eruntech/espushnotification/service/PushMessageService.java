@@ -13,6 +13,8 @@ import com.eruntech.espushnotification.utils.UserData;
 
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 /**
@@ -23,9 +25,12 @@ import java.util.Set;
 public class PushMessageService extends Service
 {
     private static Context serviceContext;
+    public static HashMap<String, ReceiverPush> receiverPushHashMap = new HashMap<>();
+
+    private Timer timer;
     private String packgeName;
     private UserData userData;
-    public static HashMap<String, ReceiverPush> receiverPushHashMap = new HashMap<>();
+
 
     @Nullable
     @Override
@@ -55,6 +60,7 @@ public class PushMessageService extends Service
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
             startReceiver();
+            runRecevivePushTask ();
         }
         catch (Exception ex)
         {
@@ -106,6 +112,44 @@ public class PushMessageService extends Service
 
     }
 
+    @Override
+    public void onLowMemory ()
+    {
+        super.onLowMemory();
+    }
+
+    /**
+     * 定时启动一次任务，防止被JVM杀死
+     */
+    private void runRecevivePushTask ()
+    {
+
+        try
+        {
+            if (timer == null)
+            {
+                timer = new Timer();
+            }
+            timer.schedule(new TimerTask()
+            {
+                @Override
+                public void run ()
+                {
+                    for (ReceiverPush pushMessage : receiverPushHashMap.values())
+                    {
+                        pushMessage.unBind();
+                        pushMessage = null;
+                    }
+                    startReceiver();
+                }
+            }, 500, 1000*30);
+
+        }
+        catch (Exception ex)
+        {
+
+        }
+    }
 
     public boolean onUnbind (Intent intent)
     {
