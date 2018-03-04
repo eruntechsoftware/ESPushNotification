@@ -140,7 +140,7 @@ public class PushMessageService extends Service
                         pushMessage.unBind();
                         pushMessage = null;
                     }
-                    startReceiver();
+//                    startReceiver();
                 }
             }, 500, 1000*30);
 
