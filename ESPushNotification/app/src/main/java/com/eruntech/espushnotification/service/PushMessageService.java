@@ -140,7 +140,9 @@ public class PushMessageService extends Service
                         Log.e("消息服务","服务终止");
                         pushMessage = null;
                     }
-                    startReceiver();
+                    Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+                    mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+                    PushMessageService.this.sendBroadcast(mIntent);
                 }
             }, 500, 1000*60*60);
 
@@ -168,9 +170,9 @@ public class PushMessageService extends Service
 //            pushMessage = null;
 //        }
 //        receiverPushHashMap.clear();
-        Intent intent = new Intent();
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent);
+        Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+        mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+        this.sendBroadcast(mIntent);
         super.onDestroy();
     }
 }

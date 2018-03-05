@@ -104,9 +104,9 @@ public class MessageService extends Service
             pushMessage.unBind();
             pushMessage = null;
         }
-        Intent intent = new Intent();
-        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(intent);
+        Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+        mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+        this.sendBroadcast(mIntent);
         super.onDestroy();
     }
 

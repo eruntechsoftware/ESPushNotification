@@ -28,9 +28,9 @@ public class ESPushRegister
             UserData userData = new UserData(context);
             userData.put("username", tag);
 
-            Intent intent = new Intent();
-            intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-            context.sendBroadcast(intent);
+            Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+            mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+            context.sendBroadcast(mIntent);
         }
         catch (Exception ex)
         {
@@ -56,9 +56,9 @@ public class ESPushRegister
             UserData userData = new UserData(context);
             userData.put("grouptags", tagsets);
 
-            Intent intent = new Intent();
-            intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-            context.sendBroadcast(intent);
+            Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+            mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+            context.sendBroadcast(mIntent);
         }
         catch (Exception ex)
         {
@@ -75,9 +75,9 @@ public class ESPushRegister
     {
         try
         {
-            Intent intent = new Intent();
-            intent.setAction("eruntech.net.conn.PUSH_INIT");
-            context.sendBroadcast(intent);
+            Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+            mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+            context.sendBroadcast(mIntent);
         }
         catch (Exception ex)
         {
