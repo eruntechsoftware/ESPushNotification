@@ -59,7 +59,7 @@ public class PushMessageService extends Service
             serviceContext = getApplicationContext();
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
-            startReceiver ();
+//            startReceiver ();
             runRecevivePushTask ();
         }
         catch (Exception ex)
@@ -142,9 +142,10 @@ public class PushMessageService extends Service
                         Log.e("消息服务","服务终止");
                         pushMessage = null;
                     }
-                    Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
-                    mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-                    PushMessageService.this.sendBroadcast(mIntent);
+                    startReceiver();
+//                    Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+//                    mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+//                    PushMessageService.this.sendBroadcast(mIntent);
                 }
             }, 500, 1000*60*30);
 
