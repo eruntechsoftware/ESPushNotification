@@ -145,7 +145,7 @@ public class PushMessageService extends Service
                     mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
                     PushMessageService.this.sendBroadcast(mIntent);
                 }
-            }, 500, 1000*60*30);
+            }, 500, 1000*60*300);
 
         }
         catch (Exception ex)
