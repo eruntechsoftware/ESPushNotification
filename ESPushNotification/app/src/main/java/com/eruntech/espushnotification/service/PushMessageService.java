@@ -59,7 +59,8 @@ public class PushMessageService extends Service
             serviceContext = getApplicationContext();
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
-            runRecevivePushTask ();
+            startReceiver ();
+//            runRecevivePushTask ();
         }
         catch (Exception ex)
         {
