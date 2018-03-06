@@ -1,16 +1,12 @@
 package com.eruntech.espushnotification.broadcast;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-import com.eruntech.espushnotification.service.IMessageBinder;
 import com.eruntech.espushnotification.service.PushMessageService;
 
 /**
@@ -19,8 +15,7 @@ import com.eruntech.espushnotification.service.PushMessageService;
 
 public class NetworkConnectChangedReceiver extends BroadcastReceiver
 {
-    private IMessageBinder messageBinder;
-    private NetworkConnectChangedReceiver.MessageServiceConnection messageServiceConnection;
+    private Handler handler;
     private static final String TAG = "Eruntech";
     public static final String TAG1 = "NetWork";
 
@@ -31,16 +26,20 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
         {
             final Intent serviceIntent = new Intent(context, PushMessageService.class);
             context.stopService(serviceIntent);
-            Handler handler=new Handler(new Handler.Callback()
+            context.startService(serviceIntent);
+            if(handler==null)
             {
-                @Override
-                public boolean handleMessage (Message message)
+                handler = new Handler(new Handler.Callback()
                 {
-                    context.startService(serviceIntent);
-                    return true;
-                }
-            });
-            handler.sendEmptyMessageDelayed(0,2000);
+                    @Override
+                    public boolean handleMessage (Message message)
+                    {
+
+                        return true;
+                    }
+                });
+                handler.sendEmptyMessageDelayed(0, 1000);
+            }
 
 //            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
 //            Context localContext = context.getApplicationContext();
@@ -77,29 +76,6 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
         catch (Exception ex)
         {
             Log.e("服务启动失败：", ex.getMessage());
-        }
-    }
-
-    public class MessageServiceConnection implements ServiceConnection
-    {
-
-        public void onServiceConnected (ComponentName componentName, IBinder iBinder)
-        {
-            try
-            {
-                Log.e("服务状态：", "服务启动了");
-                messageBinder = (IMessageBinder) iBinder;
-                messageBinder.invokeMethodInMessageService();
-            }
-            catch (Exception ex)
-            {
-                Log.e("服务启动失败：", ex.getMessage());
-            }
-        }
-
-        public void onServiceDisconnected (ComponentName var1)
-        {
-            Log.e("服务状态：", "服务关闭了");
         }
     }
 }

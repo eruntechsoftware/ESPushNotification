@@ -59,8 +59,8 @@ public class PushMessageService extends Service
             serviceContext = getApplicationContext();
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
-            startReceiver ();
-//            runRecevivePushTask ();
+//            startReceiver ();
+            runRecevivePushTask ();
         }
         catch (Exception ex)
         {
@@ -146,7 +146,7 @@ public class PushMessageService extends Service
                     mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
                     PushMessageService.this.sendBroadcast(mIntent);
                 }
-            }, 500, 1000*60*300);
+            }, 500, 1000*60*30);
 
         }
         catch (Exception ex)
