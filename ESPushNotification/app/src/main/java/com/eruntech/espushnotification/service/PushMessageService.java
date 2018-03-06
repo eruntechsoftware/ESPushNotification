@@ -129,6 +129,7 @@ public class PushMessageService extends Service
             {
                 timer = new Timer();
             }
+
             timer.schedule(new TimerTask()
             {
                 @Override
@@ -144,7 +145,7 @@ public class PushMessageService extends Service
                     mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
                     PushMessageService.this.sendBroadcast(mIntent);
                 }
-            }, 500, 1000*60*60);
+            }, 500, 1000*60*30);
 
         }
         catch (Exception ex)
@@ -170,6 +171,10 @@ public class PushMessageService extends Service
 //            pushMessage = null;
 //        }
 //        receiverPushHashMap.clear();
+        timer.cancel();
+        timer.purge();
+
+        timer=null;
         Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
         mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
         this.sendBroadcast(mIntent);
