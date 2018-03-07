@@ -49,7 +49,6 @@ public class StartRunMessageServiceReceiver extends BroadcastReceiver implements
             mHwPushManager.isEnableReceiverNotifyMsg(true);
 
             final Intent serviceIntent = new Intent(context, PushMessageService.class);
-            context.startService(serviceIntent);
             if (handler == null)
             {
                 handler = new Handler(new Handler.Callback()
