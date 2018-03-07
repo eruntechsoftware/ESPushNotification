@@ -32,7 +32,7 @@ public class ScreenReceiverUtil {
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
-        mContext.registerReceiver(mScreenReceiver,filter);
+        mContext.getApplicationContext().registerReceiver(mScreenReceiver,filter);
     }
 
     public void stopScreenReceiverListener(){
