@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.eruntech.espushnotification.receiver.StartRunMessageServiceReceiver;
 import com.eruntech.espushnotification.utils.Contants;
@@ -41,14 +40,14 @@ public class AliveJobService extends JobService
             // 具体任务逻辑
             if (SystemUtils.isAPPALive(getApplicationContext(), Contants.PACKAGE_NAME))
             {
-                Toast.makeText(getApplicationContext(), "APP活着的", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "APP活着的", Toast.LENGTH_SHORT).show();
             }
             else
             {
                 Intent intent = new Intent(StartRunMessageServiceReceiver.class.getName());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 sendBroadcast(intent);
-                Toast.makeText(getApplicationContext(), "APP被杀死，重启...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "APP被杀死，重启...", Toast.LENGTH_SHORT).show();
             }
             // 通知系统任务执行结束
             jobFinished((JobParameters) msg.obj, false);

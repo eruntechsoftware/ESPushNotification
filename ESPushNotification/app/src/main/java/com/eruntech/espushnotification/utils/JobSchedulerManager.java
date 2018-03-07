@@ -50,7 +50,7 @@ public class JobSchedulerManager
         // 构建JobInfo对象，传递给JobSchedulerService
         JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, new ComponentName(mContext, AliveJobService.class));
         // 设置每2秒执行一下任务
-        builder.setPeriodic(3000);
+        builder.setPeriodic(1000*6);
         // 设置设备重启时，执行该任务
         builder.setPersisted(true);
         // 当插入充电器，执行该任务

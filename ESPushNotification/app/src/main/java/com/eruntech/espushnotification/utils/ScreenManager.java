@@ -52,7 +52,7 @@ public class ScreenManager
             Log.d(TAG, "准备启动SinglePixelActivity...");
         Intent intent = new Intent(mContext, SinglePixelActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        mContext.getApplicationContext().startActivity(intent);
     }
 
     // 结束SinglePixelActivity
