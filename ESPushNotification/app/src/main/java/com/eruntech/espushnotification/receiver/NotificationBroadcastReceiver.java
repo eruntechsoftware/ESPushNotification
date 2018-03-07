@@ -1,4 +1,4 @@
-package com.eruntech.espushnotification.broadcast;
+package com.eruntech.espushnotification.receiver;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;

@@ -1,4 +1,4 @@
-package com.eruntech.espushnotification.broadcast;
+package com.eruntech.espushnotification.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,17 +7,25 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.eruntech.espushnotification.handlers.ReceiverPush;
 import com.eruntech.espushnotification.service.PushMessageService;
-
-import static com.eruntech.espushnotification.service.PushMessageService.receiverPushHashMap;
+import com.eruntech.espushnotification.utils.HwPushManager;
+import com.eruntech.espushnotification.utils.JobSchedulerManager;
+import com.eruntech.espushnotification.utils.ScreenManager;
 
 /**
  * Created by Ming on 2017/11/17.
  */
 
-public class NetworkConnectChangedReceiver extends BroadcastReceiver
+public class StartRunMessageServiceReceiver extends BroadcastReceiver implements ScreenReceiverUtil.SreenStateListener
 {
+    // 动态注册锁屏等广播
+    private ScreenReceiverUtil mScreenListener;
+    // 1像素Activity管理类
+    private ScreenManager mScreenManager;
+    // JobService，执行系统任务
+    private JobSchedulerManager mJobManager;
+    // 华为推送管理类
+    private HwPushManager mHwPushManager;
     private Handler handler;
     private static final String TAG = "Eruntech";
     public static final String TAG1 = "NetWork";
@@ -27,21 +35,28 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
     {
         try
         {
+            // 1. 注册锁屏广播监听器
+            mScreenListener = new ScreenReceiverUtil(context);
+            mScreenManager = ScreenManager.getScreenManagerInstance(context);
+            mScreenListener.setScreenReceiverListener(this);
+            // 2. 启动系统任务
+            mJobManager = JobSchedulerManager.getJobSchedulerInstance(context);
+            mJobManager.startJobScheduler();
+            // 3. 华为推送保活，允许接收透传
+            mHwPushManager = HwPushManager.getInstance(context);
+            mHwPushManager.startRequestToken();
+            mHwPushManager.isEnableReceiveNormalMsg(true);
+            mHwPushManager.isEnableReceiverNotifyMsg(true);
+
             final Intent serviceIntent = new Intent(context, PushMessageService.class);
             context.startService(serviceIntent);
-            if(handler==null)
+            if (handler == null)
             {
                 handler = new Handler(new Handler.Callback()
                 {
                     @Override
                     public boolean handleMessage (Message message)
                     {
-                        for (ReceiverPush pushMessage : receiverPushHashMap.values())
-                        {
-                            pushMessage.unBind();
-                            Log.e("消息服务","服务终止");
-                            pushMessage = null;
-                        }
                         context.startService(serviceIntent);
                         return true;
                     }
@@ -49,7 +64,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
                 handler.sendEmptyMessageDelayed(0, 1000);
             }
 
-//            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
+//            messageServiceConnection = new StartRunMessageServiceReceiver.MessageServiceConnection();
 //            Context localContext = context.getApplicationContext();
 //            Intent mIntent = new Intent("com.eruntech.espushnotification.service.MessageService");
 //            mIntent.setClass(localContext, MessageService.class);
@@ -76,7 +91,6 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
 //            }
 
 
-
             //Service被启动时，将会有弹出消息提示
 //            Toast.makeText(context, "[开启我的服务]", Toast.LENGTH_LONG).show();
 
@@ -85,5 +99,30 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
         {
             Log.e("服务启动失败：", ex.getMessage());
         }
+    }
+
+    @Override
+    public void onSreenOn ()
+    {
+        // 亮屏，移除"1像素"
+        mScreenManager.finishActivity();
+    }
+
+    @Override
+    public void onSreenOff ()
+    {
+        // 接到锁屏广播，将SportsActivity切换到可见模式
+        // "咕咚"、"乐动力"、"悦动圈"就是这么做滴
+//            Intent intent = new Intent(SportsActivity.this,SportsActivity.class);
+//            startActivity(intent);
+        // 如果你觉得，直接跳出SportActivity很不爽
+        // 那么，我们就制造个"1像素"惨案
+        mScreenManager.startActivity();
+    }
+
+    @Override
+    public void onUserPresent ()
+    {
+        // 解锁，暂不用，保留
     }
 }

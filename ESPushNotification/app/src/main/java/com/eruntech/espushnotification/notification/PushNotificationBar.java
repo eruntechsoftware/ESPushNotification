@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.eruntech.espushnotification.R;
-import com.eruntech.espushnotification.broadcast.NotificationBroadcastReceiver;
+import com.eruntech.espushnotification.receiver.NotificationBroadcastReceiver;
 import com.google.gson.Gson;
 
 import java.util.Map;
