@@ -59,8 +59,8 @@ public class PushMessageService extends Service
             serviceContext = getApplicationContext();
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
-//            startReceiver ();
-            runRecevivePushTask ();
+            startReceiver ();
+//            runRecevivePushTask ();
         }
         catch (Exception ex)
         {
@@ -142,13 +142,10 @@ public class PushMessageService extends Service
                         Log.e("消息服务","服务终止");
                         pushMessage = null;
                     }
-                    startReceiver();
-//                    Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
-//                    mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-//                    PushMessageService.this.sendBroadcast(mIntent);
-                }
-            }, 500, 1000*60*30);
 
+                }
+            }, 1000*60*30, 1000*60*30);
+            startReceiver();
         }
         catch (Exception ex)
         {
@@ -167,18 +164,11 @@ public class PushMessageService extends Service
     public void onDestroy ()
     {
         Log.e("消息服务：", "停止了");
-//        for (ReceiverPush pushMessage : receiverPushHashMap.values())
-//        {
-//            pushMessage.unBind();
-//            pushMessage = null;
-//        }
-//        receiverPushHashMap.clear();
-        timer.cancel();
-        timer.purge();
-
+//        timer.cancel();
+//        timer.purge();
         Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
         mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        this.sendBroadcast(mIntent);
+        PushMessageService.this.sendBroadcast(mIntent);
         super.onDestroy();
     }
 }

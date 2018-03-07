@@ -7,7 +7,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.eruntech.espushnotification.handlers.ReceiverPush;
 import com.eruntech.espushnotification.service.PushMessageService;
+
+import static com.eruntech.espushnotification.service.PushMessageService.receiverPushHashMap;
 
 /**
  * Created by Ming on 2017/11/17.
@@ -33,11 +36,17 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
                     @Override
                     public boolean handleMessage (Message message)
                     {
+                        for (ReceiverPush pushMessage : receiverPushHashMap.values())
+                        {
+                            pushMessage.unBind();
+                            Log.e("消息服务","服务终止");
+                            pushMessage = null;
+                        }
                         context.startService(serviceIntent);
                         return true;
                     }
                 });
-                handler.sendEmptyMessageDelayed(0, 1000);
+                handler.sendEmptyMessageDelayed(0, 2000);
             }
 
 //            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();
