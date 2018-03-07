@@ -26,7 +26,7 @@ public class JobSchedulerManager
 
     private JobSchedulerManager (Context ctxt)
     {
-        this.mContext = ctxt;
+        this.mContext = ctxt.getApplicationContext();
         mJobScheduler = (JobScheduler) ctxt.getSystemService(Context.JOB_SCHEDULER_SERVICE);
     }
 
