@@ -24,6 +24,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile files('libs/gson-1.7.1.jar')
+    compile files('libs/HwPush_SDK_V2705.jar')
     compile 'com.rabbitmq:amqp-client:4.1.0'
     compile 'com.github.eruntechsoftware:AndroidESLibrary:1.0.120'
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'

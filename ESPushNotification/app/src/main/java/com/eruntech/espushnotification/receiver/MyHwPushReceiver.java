@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.eruntech.espushnotification.utils.Contants;
 import com.huawei.android.pushagent.api.PushEventReceiver;
-import com.jiangdg.keepappalive.utils.Contants;
 
 import java.io.UnsupportedEncodingException;
 
@@ -17,7 +17,8 @@ import java.io.UnsupportedEncodingException;
  *
  */
 
-public class MyHwPushReceiver extends PushEventReceiver{
+public class MyHwPushReceiver extends PushEventReceiver
+{
     private final static String TAG = "MyHwPushReceiver";
 
     /**
