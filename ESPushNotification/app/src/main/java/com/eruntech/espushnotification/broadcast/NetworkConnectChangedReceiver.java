@@ -28,7 +28,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
         try
         {
             final Intent serviceIntent = new Intent(context, PushMessageService.class);
-
+            context.startService(serviceIntent);
             if(handler==null)
             {
                 handler = new Handler(new Handler.Callback()
@@ -46,7 +46,7 @@ public class NetworkConnectChangedReceiver extends BroadcastReceiver
                         return true;
                     }
                 });
-                handler.sendEmptyMessageDelayed(0, 2000);
+                handler.sendEmptyMessageDelayed(0, 1000);
             }
 
 //            messageServiceConnection = new NetworkConnectChangedReceiver.MessageServiceConnection();

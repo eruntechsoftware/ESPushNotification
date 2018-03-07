@@ -70,6 +70,10 @@ public class HomeWatcher {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             ToastHelper.toastShow(context,"启动服务了");
+
+            Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
+            mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
+            context.sendBroadcast(mIntent);
 //            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
 //                String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
 //                if (reason != null) {

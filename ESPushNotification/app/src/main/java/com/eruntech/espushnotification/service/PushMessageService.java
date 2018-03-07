@@ -169,9 +169,6 @@ public class PushMessageService extends Service
         Log.e("消息服务：", "停止了");
 //        timer.cancel();
 //        timer.purge();
-        Intent mIntent = new Intent("com.eruntech.espushnotification.broadcast.NetworkConnectChangedReceiver");
-        mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-        PushMessageService.this.sendBroadcast(mIntent);
         super.onDestroy();
     }
 }
