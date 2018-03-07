@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.eruntech.espushnotification.handlers.ReceiveService;
 import com.eruntech.espushnotification.handlers.ReceiverPush;
-import com.eruntech.espushnotification.utils.HomeWatcher;
 import com.eruntech.espushnotification.utils.UserData;
 
 import java.util.HashMap;
@@ -60,8 +59,6 @@ public class PushMessageService extends Service
             serviceContext = getApplicationContext();
             this.userData = new UserData(serviceContext);
             this.packgeName = this.getPackageName();
-            HomeWatcher homeWatcher = new HomeWatcher(serviceContext);
-            homeWatcher.startWatch();
             startReceiver ();
 //            runRecevivePushTask ();
         }
