@@ -41,6 +41,7 @@ public class SinglePixelActivity extends AppCompatActivity
         mWindow.setAttributes(attrParams);
         // 绑定SinglePixelActivity到ScreenManager
         ScreenManager.getScreenManagerInstance(this).setSingleActivity(this);
+        setVisible(false);
     }
 
     @Override
