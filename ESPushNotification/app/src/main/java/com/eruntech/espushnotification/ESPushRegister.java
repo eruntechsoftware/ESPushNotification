@@ -65,23 +65,4 @@ public class ESPushRegister
 
         }
     }
-
-    /**
-     * 系统初始化
-     *
-     * @param context 应用程序上下文
-     **/
-    public static void init (Context context)
-    {
-        try
-        {
-            Intent mIntent = new Intent("com.eruntech.espushnotification.receiver.StartRunMessageServiceReceiver");
-            mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-            context.sendBroadcast(mIntent);
-        }
-        catch (Exception ex)
-        {
-
-        }
-    }
 }

@@ -50,7 +50,7 @@ public class StartRunMessageServiceReceiver extends BroadcastReceiver implements
                     mJobManager.startJobScheduler();
 
                     // 那么，我们就制造个"1像素"惨案
-                    mScreenManager.startActivity();
+//                    mScreenManager.startActivity();
 
                     // 3. 华为推送保活，允许接收透传
                     mHwPushManager = HwPushManager.getInstance(context);
