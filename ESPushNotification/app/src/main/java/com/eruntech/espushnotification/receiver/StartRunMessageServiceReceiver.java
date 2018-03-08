@@ -36,21 +36,21 @@ public class StartRunMessageServiceReceiver extends BroadcastReceiver implements
         try
         {
             // 1. 注册锁屏广播监听器
-            mScreenListener = new ScreenReceiverUtil(context);
-            mScreenManager = ScreenManager.getScreenManagerInstance(context);
-            mScreenListener.setScreenReceiverListener(this);
-            // 2. 启动系统任务
-            mJobManager = JobSchedulerManager.getJobSchedulerInstance(context);
-            mJobManager.startJobScheduler();
-
-            // 那么，我们就制造个"1像素"惨案
-            mScreenManager.startActivity();
-
-            // 3. 华为推送保活，允许接收透传
-            mHwPushManager = HwPushManager.getInstance(context);
-            mHwPushManager.startRequestToken();
-            mHwPushManager.isEnableReceiveNormalMsg(true);
-            mHwPushManager.isEnableReceiverNotifyMsg(true);
+//            mScreenListener = new ScreenReceiverUtil(context);
+//            mScreenManager = ScreenManager.getScreenManagerInstance(context);
+//            mScreenListener.setScreenReceiverListener(this);
+//            // 2. 启动系统任务
+//            mJobManager = JobSchedulerManager.getJobSchedulerInstance(context);
+//            mJobManager.startJobScheduler();
+//
+//            // 那么，我们就制造个"1像素"惨案
+//            mScreenManager.startActivity();
+//
+//            // 3. 华为推送保活，允许接收透传
+//            mHwPushManager = HwPushManager.getInstance(context);
+//            mHwPushManager.startRequestToken();
+//            mHwPushManager.isEnableReceiveNormalMsg(true);
+//            mHwPushManager.isEnableReceiverNotifyMsg(true);
 
             final Intent serviceIntent = new Intent(context, PushMessageService.class);
             if (handler == null)
