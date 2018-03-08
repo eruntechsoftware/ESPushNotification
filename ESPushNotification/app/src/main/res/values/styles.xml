@@ -10,7 +10,7 @@
 
     <!--1像素Activity风格 @android:color/transparent-->
     <style name="SingleActivityStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@color/colorAccent</item>
+        <item name="android:windowBackground">@null</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>

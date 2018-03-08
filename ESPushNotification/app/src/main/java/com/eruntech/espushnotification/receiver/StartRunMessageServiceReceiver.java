@@ -69,6 +69,7 @@ public class StartRunMessageServiceReceiver extends BroadcastReceiver implements
                     @Override
                     public boolean handleMessage (Message message)
                     {
+                        mScreenManager.finishActivity();
                         context.startService(serviceIntent);
                         return true;
                     }
