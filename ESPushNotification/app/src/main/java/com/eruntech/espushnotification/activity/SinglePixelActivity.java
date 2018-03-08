@@ -36,8 +36,8 @@ public class SinglePixelActivity extends AppCompatActivity
         WindowManager.LayoutParams attrParams = mWindow.getAttributes();
         attrParams.x = 0;
         attrParams.y = 0;
-        attrParams.height = 300;
-        attrParams.width = 300;
+        attrParams.height = 0;
+        attrParams.width = 0;
         mWindow.setAttributes(attrParams);
         // 绑定SinglePixelActivity到ScreenManager
         ScreenManager.getScreenManagerInstance(this).setSingleActivity(this);
