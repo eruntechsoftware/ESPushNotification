@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.birthstone.core.helper.ToastHelper;
-
 /**
  * Home键监听封装
  */
@@ -69,7 +67,6 @@ public class HomeWatcher {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            ToastHelper.toastShow(context,"启动服务了");
 
             Intent mIntent = new Intent("com.eruntech.espushnotification.receiver.StartRunMessageServiceReceiver");
             mIntent.setAction("eruntech.net.conn.PUSH_MESSAGE");
