@@ -43,7 +43,6 @@ public class PushMessageService extends Service
     public void onCreate ()
     {
         super.onCreate();
-
     }
 
     public static Context getServiceContext ()
