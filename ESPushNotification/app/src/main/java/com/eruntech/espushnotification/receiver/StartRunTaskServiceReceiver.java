@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 import com.eruntech.espushnotification.service.TaskService;
@@ -76,7 +75,7 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
 //                    }
 //                });
 //                handler.sendEmptyMessageDelayed(0, 1000);
-            }
+//            }
 
         }
         catch (Exception ex)
