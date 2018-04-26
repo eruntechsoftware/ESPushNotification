@@ -35,7 +35,7 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
     {
         try
         {
-            if(intent.getAction().equals("eruntech.net.conn.PUSH_MESSAGE"))
+            if (intent.getAction().equals("eruntech.net.conn.PUSH_MESSAGE"))
             {
                 // 1. 注册锁屏广播监听器
                 new Thread(new Runnable()
@@ -65,20 +65,7 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
                 Intent serviceIntent = new Intent(context, TaskService.class);
                 context.stopService(serviceIntent);
                 context.startService(serviceIntent);
-//            if (handler == null)
-//            {
-//                handler = new Handler(new Handler.Callback()
-//                {
-//                    @Override
-//                    public boolean handleMessage (Message message)
-//                    {
-//                        mScreenManager.finishActivity();
-//
-//                        return true;
-//                    }
-//                });
-//                handler.sendEmptyMessageDelayed(0, 1000);
-//            }
+                mScreenManager.finishActivity();
             }
         }
         catch (Exception ex)

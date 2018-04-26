@@ -43,7 +43,7 @@ public class TaskService extends Service
         try
         {
             serviceContext = getApplicationContext();
-//            startTask ();
+            startTask ();
         }
         catch (Exception ex)
         {
