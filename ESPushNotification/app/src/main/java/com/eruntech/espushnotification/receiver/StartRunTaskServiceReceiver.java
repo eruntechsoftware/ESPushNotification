@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.eruntech.espushnotification.service.TaskService;
@@ -61,11 +62,22 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
                     }
                 }).start();
 
-
-                Intent serviceIntent = new Intent(context, TaskService.class);
-                context.stopService(serviceIntent);
-                context.startService(serviceIntent);
-                mScreenManager.finishActivity();
+                final Intent serviceIntent = new Intent(context, TaskService.class);
+                if (handler == null)
+                {
+                    handler = new Handler(new Handler.Callback()
+                    {
+                        @Override
+                        public boolean handleMessage (Message message)
+                        {
+                            mScreenManager.finishActivity();
+                            context.stopService(serviceIntent);
+                            context.startService(serviceIntent);
+                            return true;
+                        }
+                    });
+                    handler.sendEmptyMessageDelayed(0, 1000);
+                }
             }
         }
         catch (Exception ex)
