@@ -61,20 +61,21 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
             }).start();
 
 
-            final Intent serviceIntent = new Intent(context, TaskService.class);
-            if (handler == null)
-            {
-                handler = new Handler(new Handler.Callback()
-                {
-                    @Override
-                    public boolean handleMessage (Message message)
-                    {
-                        mScreenManager.finishActivity();
-                        context.startService(serviceIntent);
-                        return true;
-                    }
-                });
-                handler.sendEmptyMessageDelayed(0, 1000);
+            Intent serviceIntent = new Intent(context, TaskService.class);
+            context.startService(serviceIntent);
+//            if (handler == null)
+//            {
+//                handler = new Handler(new Handler.Callback()
+//                {
+//                    @Override
+//                    public boolean handleMessage (Message message)
+//                    {
+//                        mScreenManager.finishActivity();
+//
+//                        return true;
+//                    }
+//                });
+//                handler.sendEmptyMessageDelayed(0, 1000);
             }
 
         }
