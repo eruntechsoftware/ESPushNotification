@@ -10,8 +10,6 @@ import android.util.Log;
 import com.eruntech.espushnotification.interfaces.ITask;
 import com.eruntech.espushnotification.task.TaskPool;
 
-import java.util.Timer;
-
 
 /**
  * 心跳服务
@@ -21,7 +19,6 @@ import java.util.Timer;
 public class TaskService extends Service
 {
     private static Context serviceContext;
-    private Timer timer;
     @Nullable
     @Override
     public IBinder onBind (Intent intent)
@@ -46,7 +43,7 @@ public class TaskService extends Service
         try
         {
             serviceContext = getApplicationContext();
-            startTask ();
+//            startTask ();
         }
         catch (Exception ex)
         {
@@ -86,16 +83,12 @@ public class TaskService extends Service
     public boolean onUnbind (Intent intent)
     {
         Log.e("消息状态", "消息服务被卸载");
-//        intent.setAction("eruntech.net.conn.PUSH_MESSAGE");
-//        this.sendBroadcast(intent);
         return super.onUnbind(intent);
     }
 
     public void onDestroy ()
     {
         Log.e("消息服务：", "停止了");
-//        timer.cancel();
-//        timer.purge();
         super.onDestroy();
     }
 }
