@@ -35,33 +35,36 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
     {
         try
         {
-            // 1. 注册锁屏广播监听器
-            new Thread(new Runnable()
+            if(intent.getAction().equals("eruntech.net.conn.PUSH_MESSAGE"))
             {
-                @Override
-                public void run ()
+                // 1. 注册锁屏广播监听器
+                new Thread(new Runnable()
                 {
-                    mScreenListener = new ScreenReceiverUtil(context);
-                    mScreenManager = ScreenManager.getScreenManagerInstance(context);
-                    mScreenListener.setScreenReceiverListener(StartRunTaskServiceReceiver.this);
-                    // 2. 启动系统任务
-                    mJobManager = JobSchedulerManager.getJobSchedulerInstance(context);
-                    mJobManager.startJobScheduler();
+                    @Override
+                    public void run ()
+                    {
+                        mScreenListener = new ScreenReceiverUtil(context);
+                        mScreenManager = ScreenManager.getScreenManagerInstance(context);
+                        mScreenListener.setScreenReceiverListener(StartRunTaskServiceReceiver.this);
+                        // 2. 启动系统任务
+                        mJobManager = JobSchedulerManager.getJobSchedulerInstance(context);
+                        mJobManager.startJobScheduler();
 
-                    // 那么，我们就制造个"1像素"惨案
-                    mScreenManager.startActivity();
+                        // 那么，我们就制造个"1像素"惨案
+                        mScreenManager.startActivity();
 
-                    // 3. 华为推送保活，允许接收透传
-                    mHwPushManager = HwPushManager.getInstance(context);
-                    mHwPushManager.startRequestToken();
-                    mHwPushManager.isEnableReceiveNormalMsg(true);
-                    mHwPushManager.isEnableReceiverNotifyMsg(true);
-                }
-            }).start();
+                        // 3. 华为推送保活，允许接收透传
+                        mHwPushManager = HwPushManager.getInstance(context);
+                        mHwPushManager.startRequestToken();
+                        mHwPushManager.isEnableReceiveNormalMsg(true);
+                        mHwPushManager.isEnableReceiverNotifyMsg(true);
+                    }
+                }).start();
 
 
-            Intent serviceIntent = new Intent(context, TaskService.class);
-            context.startService(serviceIntent);
+                Intent serviceIntent = new Intent(context, TaskService.class);
+                context.stopService(serviceIntent);
+                context.startService(serviceIntent);
 //            if (handler == null)
 //            {
 //                handler = new Handler(new Handler.Callback()
@@ -76,7 +79,7 @@ public class StartRunTaskServiceReceiver extends BroadcastReceiver implements Sc
 //                });
 //                handler.sendEmptyMessageDelayed(0, 1000);
 //            }
-
+            }
         }
         catch (Exception ex)
         {
