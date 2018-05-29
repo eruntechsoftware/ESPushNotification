@@ -1,6 +1,5 @@
 package com.eruntech.espushnotification.handlers;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.eruntech.espushnotification.ESPushRegister;
@@ -27,8 +26,6 @@ public class ReceiverPush implements Consumer
     private String tag;
     private IReceiveCallback receiveCallback;
 
-
-
     public ReceiverPush (String tag,IReceiveCallback receiveCallback) throws IOException
     {
         this.tag = tag;
@@ -39,6 +36,7 @@ public class ReceiverPush implements Consumer
             {
                 try
                 {
+
                     UserData userData = new UserData(ESPushRegister.CONTEXT);
                     //打开连接和创建频道
                     ConnectionFactory factory = new ConnectionFactory();

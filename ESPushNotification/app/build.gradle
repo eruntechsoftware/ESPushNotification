@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
     defaultConfig {
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -26,7 +26,7 @@ dependencies {
     compile files('libs/gson-1.7.1.jar')
     compile files('libs/HwPush_SDK_V2705.jar')
     compile 'com.rabbitmq:amqp-client:4.1.0'
-//    compile 'com.github.eruntechsoftware:AndroidESLibrary:1.0.120'
+    compile 'com.github.eruntechsoftware:AndroidESLibrary:1.0.120'
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     testCompile 'junit:junit:4.12'
 }
