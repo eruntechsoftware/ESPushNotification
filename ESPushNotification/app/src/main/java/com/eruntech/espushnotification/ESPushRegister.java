@@ -15,6 +15,7 @@ import java.util.Set;
 public class ESPushRegister
 {
 
+    public static Context CONTEXT;
     /**
      * 注册推送标记
      *
@@ -25,6 +26,7 @@ public class ESPushRegister
     {
         try
         {
+            CONTEXT = context;
             UserData userData = new UserData(context);
             userData.put("username", tag);
 
@@ -48,6 +50,7 @@ public class ESPushRegister
     {
         try
         {
+            CONTEXT = context;
             Set<String> tagsets = new HashSet<String>();
             for (Object obj:tags)
             {

@@ -1,9 +1,12 @@
 package com.eruntech.espushnotification.handlers;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.eruntech.espushnotification.ESPushRegister;
 import com.eruntech.espushnotification.interfaces.IReceiveCallback;
 import com.eruntech.espushnotification.notification.PushMessage;
+import com.eruntech.espushnotification.utils.UserData;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
@@ -24,6 +27,8 @@ public class ReceiverPush implements Consumer
     private String tag;
     private IReceiveCallback receiveCallback;
 
+
+
     public ReceiverPush (String tag,IReceiveCallback receiveCallback) throws IOException
     {
         this.tag = tag;
@@ -34,13 +39,16 @@ public class ReceiverPush implements Consumer
             {
                 try
                 {
-
+                    UserData userData = new UserData(ESPushRegister.CONTEXT);
                     //打开连接和创建频道
                     ConnectionFactory factory = new ConnectionFactory();
                     //设置MabbitMQ所在主机ip或者主机名  127.0.0.1即localhost
-                    factory.setHost("47.104.78.112");
-                    factory.setUsername("admin");
-                    factory.setPassword("7YWMenHqJXMtgQM8");
+                    factory.setHost(userData.getString("rabbitHost"));
+                    factory.setUsername(userData.getString("rabbitUserName"));
+                    factory.setPassword(userData.getString("rabbitPassWord"));
+                    //factory.setHost("47.104.78.112");
+                    //factory.setUsername("admin");
+                    //factory.setPassword("7YWMenHqJXMtgQM8");
                     factory.setVirtualHost("pushmessage");
                     //创建连接
                     connection = factory.newConnection();
