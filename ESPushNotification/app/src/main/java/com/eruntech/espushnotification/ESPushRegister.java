@@ -14,8 +14,8 @@ import java.util.Set;
  */
 public class ESPushRegister
 {
-    public static Context CONTEXT;
 
+    public static Context CONTEXT;
     /**
      * 注册推送标记
      *
